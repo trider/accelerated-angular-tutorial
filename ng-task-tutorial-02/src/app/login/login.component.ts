@@ -1,15 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { 
-  FormsModule,
-  ReactiveFormsModule,
-  FormGroup, 
-  FormControl, 
-
-
-} from "@angular/forms";
-import { Users } from '../common/data/users';
+import { ReactiveFormsModule, FormGroup, FormControl} from "@angular/forms";
+import { Users } from '../data/users';
 
 
 
@@ -20,7 +13,6 @@ import { Users } from '../common/data/users';
     CommonModule,
     RouterLink,
     ReactiveFormsModule,
-    FormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -47,7 +39,7 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     this.user = this.users.filter((user:any) => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password)[0];
     if(this.user !== null ){
-      alert(this.user.userName + ' logged in')
+      alert(`Email: ${this.user.email}\nPassword: ${this.user.password}`);
       console.log('User found\n\n', this.user);
       sessionStorage.setItem('user', JSON.stringify(this.user));
       this.router.navigate(['/home']);

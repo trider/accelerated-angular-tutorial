@@ -3,9 +3,9 @@
   <h1>Part 2: Login</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <label for="email" >Email</label><br/>
-        <input formControlEmail="email" id="email" required /><br/>
+        <input formControlName="email" id="email" required /><br/>
         <label for="password" >Password</label><br/>
-        <input formControlEmail="password" type="password" /><br/>
+        <input formControlName="password" type="password" /><br/>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
