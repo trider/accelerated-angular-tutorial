@@ -135,64 +135,85 @@ ng generate component login
 
 The command generates the following components.
 
-![][image4]
+![folder](folder.png)
 
 An Angular component is a TypeScript file that includes three things. The first of these is a set of references to framework modules and other application resources.
 
-`import { Component } from '@angular/core';`  
+```javascript
+import { Component } from '@angular/core';
+```
+
 Following the references is an @Component directive. Angular directives come in many forms and they provide different types of functionality. The @Component directive defines component-specific metadata, such as the component’s selector (name) and the component modules it imports. It also includes references to the component template and template-specific styling. The component template can be the component's HTML code and Angular directive, or it can be a link to a file. Likewise, component styling can be either style-sheet code or a link to a component stylesheet.
 
-`@Component({`  
- `selector: 'app-login',`  
- `standalone: true,`  
- `imports: [],`  
- `templateUrl: './login.component.html',`  
- `styleUrl: './login.component.scss'`  
-`})`  
+```javascript
+@Component({
+ selector: 'app-login',
+ standalone: true,
+ imports: [],
+ templateUrl: './login.component.html',
+ styleUrl: './login.component.scss'
+})
+```
+
 The final and largest part of the component is the component class. The class contains component variables and logic
 
-`export class LoginComponent {}`  
+```javascript
+export class LoginComponent {}
+```
+
 Run the command again to create the Tasks component.
 
+```bash
 ng generate component tasks
+```
 
 ### **Adding Routes**
 
 Now we have created our components, we need to provide a way to find them and navigate between them. Angular’s navigation mechanism is called routing, and each route is a relative path (URL) within the application. We define each route in the app.routes.ts file. Open the file, and add references to the Login and Tasks components.
 
-`import { Routes } from '@angular/router';`  
-`import { LoginComponent } from './login/login.component';`  
-`import { TasksComponent } from './tasks/tasks.component';`
+```javascript
+import { Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { TasksComponent } from './tasks/tasks.component';
+```
 
 In the Routes object, we will add a route for each component. Each path has two elements: path and component.
 
 * Path: indicates the relative path of the component within the application.
 * Component: indicates the component associated with the path.
 
-`export const routes: Routes = [`  
- `{ path: 'login', component: LoginComponent },`  
- `{ path: 'tasks', component: TasksComponent },`  
-`];`
-
+```javascript
+export const routes: Routes = [
+{ path: 'login', component: LoginComponent },
+{ path: 'tasks', component: TasksComponent },
+];
+```
 Let’s launch the app and see what happens. At the command line, type
 
-Ng serve
+```bash
+ng serve
+```
 
-![][image5]
+Click the local to open the app in a browser. The browser displays a blank page. In the browser’s address bar, type /login. 
 
-Click the local to open the app in a browser. The browser displays a blank page. In the browser’s address bar, type /login. You should see the following.
+![run](run.png)
+
+You should see the following.
 
 Refresh your browser, and you should be able to navigate from the Login page to the Tasks page and back.
 
-![][image6]
+![login](login.png)
 
 To ensure that this page opens when we launch the app, we will add a default path.
 
-`export const routes: Routes = [`  
- `{ path: '', redirectTo: '/login', pathMatch: 'full' },`  
- `{ path: 'login', component: LoginComponent },`  
- `{ path: 'tasks', component: TasksComponent },`  
-`];`  
+```javascript
+export const routes: Routes = [
+{ path: '', redirectTo: '/login', pathMatch: 'full' },
+{ path: 'login', component: LoginComponent },
+{ path: 'tasks', component: TasksComponent },
+];
+```
+
 Now, when the application is launched, the Login page opens.
 
 ### **Navigating Between Pages**
@@ -201,16 +222,22 @@ With our Login and Tasks pages in place, we add links to navigate from one page 
 
 FIrst, open login.component.ts and add the following reference.
 
-`import { RouterLink } from '@angular/router';`
+```javascript
+import { RouterLink } from '@angular/router';
+```
 
 In @Component, add RouterLink to the imports array.
 
- `imports: [RouterLink],`
+```javascript
+imports: [RouterLink],
+```
 
 Now open login.component.html and add the following.
 
-`<h1>Login</h1>`  
-`<p>Part 1: The Basics</p>`  
-`<p><a routerLink="/tasks">Tasks</a></p>`
+```html
+<h1>Login</h1>
+<p>Part 1: The Basics</p>
+<p><a routerLink="/tasks">Tasks</a></p>
+```
 
 Do the same for the Tasks page.
