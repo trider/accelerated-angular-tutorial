@@ -18,15 +18,7 @@ export class TasksComponent implements OnInit {
 
   tasks:any = Tasks;
   tableData:any = null
-  showNav: boolean = false;
-  tableCols: any = [
-    'name',
-    'description',
-    'added',
-    'updated',
-    'status',
-  ];
-  currentYear!: number;
+  tableCols: any = [ 'name', 'description','added','updated','status'];
   user:any = null;
 
   constructor() { }
