@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl} from "@angular/forms";
 import { Users } from '../data/users';
 
@@ -10,14 +9,13 @@ import { Users } from '../data/users';
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   users:any = Users;
   user:any = null
@@ -28,19 +26,12 @@ export class LoginComponent implements OnInit {
   });
 
 
-  constructor(
-    private router: Router) { 
-  }
-
-  ngOnInit(): void {
-
-  }
+  constructor( private router: Router) { }
 
   onSubmit(){
     this.user = this.users.filter((user:any) => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password)[0];
     if(this.user !== null ){
       alert(`Email: ${this.user.email}\nPassword: ${this.user.password}`);
-      console.log('User found\n\n', this.user);
       sessionStorage.setItem('user', JSON.stringify(this.user));
       this.router.navigate(['/tasks']);
 

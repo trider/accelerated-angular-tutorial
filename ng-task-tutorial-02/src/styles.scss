@@ -6,7 +6,7 @@ body {
   font-family: sans-serif;
   margin: 20px;
   padding: 0;
-  //   text-align: center;
+  text-align: center;
 }
 
 h1 {
@@ -94,10 +94,8 @@ form {
   }
   label {
     text-align: "left";
-
-    margin-bottom: "5%";
-
-    font-size: medium;
+    margin-bottom: 1%;
+    font-size: small;
   }
 
   input {
