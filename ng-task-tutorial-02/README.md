@@ -1,4 +1,4 @@
-# **Angular for React Developers Part 2: User Interaction and Forms**
+# **Angular for React Developers Part Two: User Interaction and Forms**
 
 In the first part of this series, we discussed navigation and routing and examined the different approaches of React and React. Angular, we created placeholder pages for a task management web app. The app had two pages Login and Tasks. Now, we have a foundation in place, we can build on it and add some basic functionality. In this article, we will add a form to the Login page.
 
