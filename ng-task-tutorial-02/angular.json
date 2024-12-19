@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-task-tutorial-02": {
+    "ng-task-tutorial-01": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ng-task-tutorial-02",
+            "outputPath": "dist/ng-task-tutorial-01",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-task-tutorial-02:build:production"
+              "buildTarget": "ng-task-tutorial-01:build:production"
             },
             "development": {
-              "buildTarget": "ng-task-tutorial-02:build:development"
+              "buildTarget": "ng-task-tutorial-01:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,6 +100,6 @@
     }
   },
   "cli": {
-    "analytics": "d0b5c9d3-3a34-480b-9a1c-bb549a4d8fcb"
+    "analytics": false
   }
 }

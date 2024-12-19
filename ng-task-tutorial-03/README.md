@@ -1,172 +1,270 @@
-# **Angular for React Developers Part 3: Components and Presenting Data**
+# **Angular for React Developers Part Two: User Interaction and Forms**
 
-In the second part of this series, we added a form to the Login page. The form enabled a user to type their email address and password. 
+In the first part of this series, we discussed navigation and routing and examined the different approaches of React and React. Angular, we created placeholder pages for a task management web app. The app had two pages Login and Tasks. Now, we have a foundation in place, we can build on it and add some basic functionality. In this article, we will add a form to the Login page.
 
 ![Login Page](react-task-tutorial-02-login.png)
 
-When the user presses Submit, the app checks the submitted credentials and authenticates the user. If the user’s credentials are valid, the application displays a message and navigates to the Task page. Now we will add a table to the page and display a list of tasks assigned to the user.
+The form enables a user to type an email and password. When the user presses the Submit button, the app checks the submitted credentials and authenticates the user. If the user’s credentials are valid, the application displays a message and navigates to the task page.
 
-![Tasks Page](ng-task-tutorial-03-tasks.png)
+For the sake of simplicity, user credentials are stored in plain text in a Javascript file. In addition, some styles from a CSS template have been applied to the Login and Tasks files. All the files referenced in this article, and the sample [Angular](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-02) and [React](https://github.com/trider/react-task-tutorial/tree/main/react-task-tutorial-02) code are available from GitHub.
 
-For now, the page only displays a table with basic task information. In future installments, we will create the functionality to add, edit, and delete tasks. As with [Part 2](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-02), I have simplified the process of building the page by providing a list of tasks in a Javascript file. All the files referenced in this article, and the sample [React](https://github.com/trider/react-task-tutorial/tree/main/react-task-tutorial-03) and [Angular](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-03) code are available from GitHub.
+## **Building React Forms**
 
-## **React Components and Data Presentation**
-
-As with Routing and Forms, React’s approach to building components and displaying data has many parallels to its Angular equivalent. Conversely, these parallels also highlight each framework’s contrasting approach. First, you declare all the referenced components at the top of the file. In this case, the userTasks file is the list of tasks and tableCols is the name of each table column.
+Let’s build a React equivalent of our Angular app’s Login page. First, we would create a file called Login.js. At the top of the file, we reference React’s useState hook to manage the Login form’s local state variables; such as email, password, and user (profile). Next, we add a reference to the React Routers, Navigate hook. The final reference is to the Users data file that stores the application’s user profile data.
 
 ```javascript
-import { Link } from "react-router-dom";
-import userTasks from "../data/tasks";
-import tableCols from "../data/cols";
-import "./_pages.css";
+import { useState } from 'react';
+import { Navigate } from "react-router-dom";
+import Users from '../data/users';
 ```
 
-Following the references, you create the component definition. This is a single function that returns the entire component. This is written with React’s unique JavaScript XML (JSX) syntax. JSX presents data by mixing static HTML elements with Javascript code. For example, the following displays the table's top row. Inside the \<tr\>\</tr\> tags there are a pair of {} braces. Within the braces, the code uses a .map method to iterate through the list of column names and display them.
+Now, we add the component’s main (Login) function.
 
 ```javascript
-const Tasks = () => {
- return (
-   <div>
-    <h1>Tasks</h1>
-     <table>
-      <thead>
-       <tr>{tableCols.map((col) => ( <th key={col}>{col}</th>))}</tr>
-      </thead>
-      <tbody> {userTasks.map((task) => (
-        <tr key={task.id}>{tableCols.map((col) => (
-         <td key={col}>{task[col.toLowerCase()]}</td>
-        ))}</tr>
-       ))}
-    </tbody>
-   </table>
-   <p><Link to="/">Logout</Link></p>
-  </div>
+const Login = () => {
+ return (<div className="card"></div>);
+}
+export default Login;
+```
+
+In the Login() function, we declare variables to store the local state of the user’s credentials (email, password) and authenticated user profile. In the Login() function, we declare variables to store the local state of the user’s credentials (email, password) and authenticated user profile. Each state variable is an array with two elements. The first element is the variable name that stores a local state value, such as email. The second is a reference to a function that updates the state using useState, such as setEmail.
+
+```javascript
+const Login = () => {
+ const [email, setEmail] = useState("");
+ const [password, setPassword] = useState("");
+ const [user, setUser] = useState();
+}
+```
+
+After we have declared our state variables, we can use them to collect and display form data. When the user types a value in the form’s Email or Password fields an onChange(e) event is triggered. This updates the local state of the relevant variable.
+
+```javascript
+const Login = () => {
+  return (
+   <div className="card">
+    <form>
+     <label>Email</label>
+     <input
+      type="email"
+      name="username"
+      placeholder="Enter email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)} />
+     <br/>
+     <label>Password</label>
+     <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}/>
+     <br/>
+     <button type="submit">Login</button>
+    </form>
+   </div>
  );
-};
-export default Tasks;
+}
 ```
 
-## **Angular Components and Data Presentation**
-
-In an Angular component, there is a clear separation between the presentational elements, component model, and code. Presentation elements use HTML and Angular directives, and the component model and computation use Typescript. This will become more apparent when we update tasks.component.html.
-
-### **Getting Started**
-
-Let’s start by opening src/app/tasks.component.ts. In the first reference, add a reference to OnInit. This is an Angular lifecycle method that is used to initialize components, such as fetching data.
+When the user submits their credentials, the function declares a value called currentUser. currentUser queries the list of users and matches the supplied credentials. If the query matches a single user, a message is displayed. Then, setUser is called to add the profile to the component’s local state. Since the default value of the local state’s user object is Null, once it is updated with valid data, the function can display the Tasks page.
 
 ```javascript
-import { Component, OnInit } from '@angular/core';
+const Login = () => {
+  return (
+   <div className="card">
+   <h1>Part 2:Login</h1>
+    {user && (<Navigate to="/tasks" replace={true} />)}
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      const currUser = Users.filter((user) => user.email === email &&
+      user.password === password)[0];
+      if(currUser){
+      alert(`Email: ${email}\nPassword: ${password}`);
+      setUser(currUser);
+      }
+      else{ alert("Invalid email or password");}
+      }} >
+      ...
+    </form>
+   </div>
+ );
+}
 ```
 
-After the first reference, add a reference to the CommonModule. This will enable us to use Angular’s pipe functionality to format data.
+## **User Interaction with Angular**
+
+Like Routing, Angular supports user interaction with forms as part of its comprehensive approach to web application development. To complicate matters [Angular](https://angular.dev/guide/forms) has two different models for implementing forms: [Template-driven](https://angular.dev/guide/forms/template-driven-forms) and [Reactive](https://angular.dev/guide/forms/reactive-forms).
+
+As the name suggests, template-driven forms let you create forms using templates that resemble generic HTML forms. Reactive Forms takes a completely different, Angular-centric approach to forms management. This approach uses a combination of Typescript code and Angular Directives to build a form. Without going into details regarding the relative merits of each approach, Template-driven forms are regarded as simpler, and Reactive forms are considered the more complex option.
+
+Despite their added complexity and steeper learning curve, Reactive forms offer a range of powerful and flexible features. This is why Reactive forms are the preferred option for Angular development. For this reason, we will use them to illustrate Angular form management.
+
+Note that the template and styles for this project are listed in app/styles.scss. User profiles are stored in app/data/users.ts. Both these files can be downloaded from  [GitHub](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-02).
+
+### **Component Setup**
+
+Before adding a form to our Login component, we must reference Angular’s ReactiveFormsModule. Open src/app/login.component.ts and add the following.
 
 ```javascript
-import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule} from "@angular/forms";
 ```
 
-Then, add a reference to the Tasks.ts data file. This file is the list of tasks assigned to the user. You can download the file from [GitHub](https://github.com/trider/ng-task-tutorial).
-
-```javascript
-import { Tasks } from '../data/tasks';
-```
-
-Next, we update @Component’s imports list to include CommonModule.
+Next in @Component, update imports.
 
 ```javascript
 @Component({
- selector: 'app-tasks',
+ selector: 'app-login',
  standalone: true,
- imports: [CommonModule,RouterLink],
- templateUrl: './tasks.component.html',
- styleUrl: './tasks.component.scss'
+ imports: [ ReactiveFormsModule],
+ templateUrl: './login.component.html',
+ styleUrl: './login.component.scss'
 })
 ```
 
-### **Extending TasksComponent**
+### **Declaring and Initizialing the Form**
 
-After we have referenced the relevant components and files, we will extend the TasksComponent class so we can add a ngOnInit method. We extend the component class with the implements keyword, followed by OnInt.
-
-```javascript
-export class TasksComponent implements OnInit {}
-```
-
-### **Declaring Task and User Data**
-
-Now let’s add the following variables. The tasks object is assigned the data from the imported Tasks list. Since we only want to display tasks created or assigned to the authenticated user, we will filter the tasks list by username and assign the data to the tableData object. The tableCols object is a list of the names of each table column. The user object holds the authenticated user profile.
+In the Login Component class, add a FormGroup called loginForm. A FormGroup contains a group of FormControls and manages form data (state) and related events.
 
 ```javascript
-export class TasksComponent implements OnInit {
- tasks:any = Tasks;
- tableData:any = null
- tableCols: any = ['name','description','added','updated','status'];
- user:any = null;
+export class LoginComponent{
+ loginForm = new FormGroup({});
 }
 ```
 
-### **Initializing the TasksComponent**
-
-Following the variable declarations, we add a constructor method. While we are not currently using the constructor, we will need it in the future to consume Angular services. After the constructor, we add an empty ngOnInit method.
+In loginForm, add two FormControls called email and password. These controls will collect and manage the data the user types into form fields. In our scenario, the FormControls perform a similar role to the useState hook. By default, the controls are empty but can be pre-populated with data.
 
 ```javascript
-constructor() { }
-ngOnInit(): void {}
+loginForm = new FormGroup({
+ email: new FormControl(''),
+ password: new FormControl(''),
+});
 ```
 
-Will use ngOnInit to retrieve the persisted user profile from the browser’s session storage. The profile is assigned to the user object.
+Before we update the component template, let's add an empty onSubmit method. This prevents the Angular compiler from throwing an exception when the method is referenced from our form.
 
 ```javascript
-ngOnInit(): void {
- this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
-}
+loginForm = new FormGroup({
+ email: new FormControl(''),
+ password: new FormControl(''),
+});
+onSubmit(){}
 ```
 
-Finally, we filter the tasks object to include only tasks assigned to the authenticated user. The filtered tasks list is assigned to the tableData object. This object will be displayed in a table in the .html page.
+### **Add the Form Template**
+
+Open login.component.ts, delete the current content of the file and add the following. This div will contain the Login form.
 
 ```javascript
-this.tableData = this.tasks.filter((task:any) =>
- task.user === this.user.userName
-);
-```
-
-### **Presenting Tasks Data**
-
-Open tasks.component.ts, and replace the file’s content with the following:
-
-```html
-<div class="container" >
- <h1>Tasks</h1>
- <p><a routerLink="/login">Go to login</a></p>
+<div class="card">
+ <h1>Part 2: Login</h1>
 </div>
 ```
 
-Following the \<h1\>Tasks\</h1\>, add a table.
-
-
-```html
-<h1>Tasks</h1>
-<table></table>
-```
-
-In the table, add a table header with a single row. By embedding a \*ngFor directive in a \<th\> tag, we iterate through the tableCols object using cols as iterator. Using double braces, each value in tableCols is displayed using interpolation. To convert the col from lower to title case, we apply the titlecase pipe. This was made possible by referencing the CommonModule.
+After the header, add an HTML form.
 
 ```html
-<thead>
- <tr>
-  <th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>
- </tr>
-</thead>
+<form></form>
 ```
 
-After the table header, we add a table body with a single row and a single \<td\> tag. Here we embed two \*ngFor directive. The first directive iterates through the tasks list. The second iterates through the tableCols object and only displays each field in the object.
+To connect the form to the FormGroup, add a reference to loginForm.
 
 ```html
-<tbody>
- <tr *ngFor="let item of tableData">
-  <td *ngFor="let col of tableCols">{{item[col]}}</td>
- </tr>
-</tbody>
+<form [formGroup]="loginForm"></form>
+
 ```
 
-When you refresh the page in the browser, you should see a list of the user’s tasks displayed.
+Now, we add the controls to the form. For each control, we add a formControlName to reference each control’s respective FormControl in the FormGroup.
 
-![Tasks Page](ng-task-tutorial-03-tasks.png)
+```html
+<form [formGroup]="loginForm">
+ <label for="email" >Email</label><br/>
+ <input formControlName="email" id="email" required /><br/>
+ <label for="password" >Password</label><br/>
+ <input formControlName="password" type="password" /><br/>
+</form>
+```
+
+The form should look like this:
+
+![Login Form](ng-task-tutorial-02-login-1.png)
+
+Once the controls are in place, we need to add a button. This lets the user submit their credentials for authentication.
+
+```html
+<form [formGroup]="loginForm">
+ ...
+ <button type="submit">Submit</button>
+</form>
+```
+
+The final step is to ensure that when the user clicks the button, something happens. We do this by adding an ngSubmit directive that calls the LoginComponent’s onSubmit() method.
+
+```html
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()"></form>
+```
+
+### **Authenticating the User**
+
+At this point, when the user presses Submit, nothing happens. Now we will add the required functionality to process the user’s credentials. Although we added a reference to User.ts, LoginComponent is unable to read it. This requires declaring a variable and assigning it the contents of the file.
+
+```javascript
+export class LoginComponent{
+ users:any = Users;
+}
+```
+
+Once we have authenticated the user, we want to be able to persist and reference their profile information. For this purpose, we declare a user variable.
+
+```javascript
+users:any = Users;
+user:any = null;
+```
+
+To authenticate the user, and persist their profile we filter the list of Users using the supplied credentials. We match the relevant values in the profile against the value held by the form control. For example, we can extract the submitted email address with this.loginForm.value.email.
+
+```javascript
+onSubmit(){
+ this.user = this.users.filter((user:any) =>
+  user.email === this.loginForm.value.email &&
+  user.password === this.loginForm.value.password)[0];
+ }
+}
+```
+
+The results of the filter are assigned to this.user, by default this.user is null.
+
+```javascript
+if(this.user !== null ){
+ alert(`Email: ${this.user.email}\nPassword: ${this.user.password}`);
+ sessionStorage.setItem('user', JSON.stringify(this.user));
+}
+```
+
+If a valid user profile is assigned to this.user, a message is displayed and the user’s profile data is persisted to the browser’s session storage.
+
+![Login Form](ng-task-tutorial-02-alert.png)
+
+### **Displaying Tasks**
+
+After authenticating the user, we want to open the Tasks page. To do this, we will need to reference Angular’s Router component.
+
+```javascript
+import { Router, RouterLink } from '@angular/router';
+```
+
+To use the Router, we need to add a constructor to LoginComponent and declare the Router service. After the loginForm declaration, add the following.
+
+```javascript
+constructor( private router: Router) { }
+```
+
+Now, once the user is authenticated we call the router’s navigate method and provide the required path.
+
+```javascript
+if(this.user !== null ){
+ …
+ this.router.navigate(['/tasks']);
+}
+
+```
