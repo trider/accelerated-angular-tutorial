@@ -1,7 +1,8 @@
-# Angular for React Developers: Overview and Motivation
+# Accelerated Angular
 
-Having published three installments of ReactJS for Angular Developers, I thought I should in do Angular for React Developers. After all, for each article in the current series, I wrote sample code for both frameworks. This series contains the following parts:
+Over the course of my series Node JS Express for FrontEnd Developers and Rapid React, I've developed a great format for web development tutorials. Accelerated Angular now applies this format to Angular. 
 
-* [Part 1](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-01 "ng-task-tutorial-01"): Angular for React Developers Part One: Routing
-* [Part 2](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-02 "ng-task-tutorial-02"): Angular for React Developers Part Two: User Interaction and Forms
-* [Part 3](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-03 "ng-task-tutorial-03"): Angular for React Developers Part Three: Components and Presenting Data
+In this series, I will show you how to get started with Angular and use it to build your own web applications. As with my previous series, I will be providing sample code and a GitHub repository with working examples for each installment. Here is a list of each installment.
+
+* [Part 1](https://github.com/trider/accelerated-angular-tutorial/tree/2f32d2669ccba0f3b19b00552c85ba11a437a975/ng-task-tutorial-01 "ng-task-tutorial-01"): Getting Started
+* [Part 2]( ""): TBD
