@@ -1,131 +1,36 @@
-# **Angular for React Developers Part One: Routing**
+# **Accelerated Angular for React Developers Part 2: Building and Linking Pages**
 
-In a web application, routing refers to how a user navigates from point A to point B. In most cases, the user lands on the home page and clicks on a link to the page they are interested in. Once the target page is displayed, they can return to the home via the browser’s back button or explore links to other pages displayed on any page or through navigation elements, such as a top bar or side menu.
+In [Part One](https://www.linkedin.com/pulse/accelerated-angular-part-1-getting-started-jonathan-gold-08uxf/), we briefly introduced Angular and got to work by installing the CLI. This allowed us to build and run a boilerplate project. In this installment, we build the foundations of our task management application. We will create two pages. The first is a placeholder Login page with a title and link to the application’s Tasks page.
 
-## **Objectives**
-
-In this article, we will build the foundations of our task management application. We will create two pages. The first is a placeholder Login page with a title and link to the application’s Tasks page.
-
-![Login Page](react-task-tutorial-01-login.png)
+![aa-02-01](aa-02-01.png)
 
 We will also create a placeholder Home page with a link to the Login page.
 
-![Tasks Page](react-task-tutorial-01-tasks.png)
+![aa-02-02](aa-02-02.png)
 
-The code for this app is available on GitHub at [ng-task-tutorial-01](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-01). The samples in this tutorial were written in Angular 18\.
+The code for this app is available on [GitHub](https://github.com/trider/accelerated-angular-tutorial/tree/673afde938e8ccd51784d269f70564c14661640d/ng-task-tutorial-02). The samples in this tutorial were written in Angular 18\.
 
-The React sample code is available from [react-task-tutorial](https://github.com/trider/react-task-tutorial/tree/main).
+## **Key Concepts**
 
-## **React Routing**
+In this section, we examine a key concept in Angular called routing, and how Angular implements it.
 
-Let’s start by creating a new task management web application.
+### **Routing**
 
-```bash
-npx create-react-app react-task-app
-```
+In a web application, routing refers to how a user navigates from point A to point B. In most cases, the user lands on the home page and clicks on a link to the page they are interested in. Once the target page is displayed, they can return to the home via the browser’s back button or explore links to other pages displayed on any page or through navigation elements, such as a top bar or side menu. 
 
-After removing the boilerplate code from App.js, we create our Login and Tasks page components.
+### **Angular Router**
 
-![Files](react-task-tutorial-01-files.png)
+Since the release of Angular 2.0, routing in Angular is handled by a built-in routing component. Once you achieve a basic understanding of Angular routing, you realize that routing is more than a navigation mechanism, it defines the structure of your application and provides a hierarchical map of how each part links together. In addition to letting you navigate from one page to another, Angular’s router has many powerful and useful features. These features include a mechanism that ensures only authorized users can access specific pages (AuthGuard), creating parameterized URLs, and managing page metadata. 
 
-Since React has no built-in routing component, we install [React Router](https://reactrouter.com/).
-
-```bash
-npm install react-router-dom
-```
-
-React Router includes several different Routers, so for the sake of simplicity, we will use the [BrowserRouter](https://reactrouter.com/en/main/router-components/browser-router). This stores a link’s URL in the browser’s address bar and lets you navigate forward and backward to and from the page. In our App.js file, let’s add a reference to BrowserRouter. In our App.js file, we add a reference to BrowserRouter.
-
-```javascript
-import { BrowserRouter } from "react-router-dom";
-```
-
-To use the BrowserRouter, we must also define Routes and Route elements, so we reference these elements.
-
-```javascript
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-```
-
-Now we add the Browser router to the App function with a child Routes object. We will define the Routes for each page.
-
-```javascript
-function App() {
- return (
-   <div className="App">
-     <BrowserRouter>
-       <Routes>
-         <Route path="/" element={<Login />} />
-         <Route path="/tasks" element={<Tasks />} />
-       </Routes>
-     </BrowserRouter>
-
-
-   </div>
- );
-}
-```
-
-To navigate between pages, we add a link object to each page. First, let’s update Login.js
-
-```javascript
-import {  Link } from "react-router-dom";
-const Login = () => {
- return (
-   <div>
-     <h1>Login</h1>
-     <p>Part 1: The Basics</p>
-     <Link to="/tasks">Go to tasks</Link>
-   </div>
- );
-}
-export default Login;
-```
-
-Next, we update Tasks.js and we’re done.
-
-```javascript
-import {  Link } from "react-router-dom";
-
-const Tasks = () => {
- return (
-   <div>
-     <h1>Tasks</h1>
-     <p>TBD</p>
-     <Link to="/">Go to login</Link>
-   </div>
- );
-}
-```
-
-## **Routing in Angular**
-
-Since the release of Angular 2.0, routing in Angular is handled by a built-in routing component. Once you achieve a basic understanding of Angular routing, you realize that routing is more than a navigation mechanism, it defines the structure of your application and provides a hierarchical map of how each part links together. In addition to letting you navigate from one page to another, Angular’s router has many powerful and useful features. These features include a mechanism that ensures only authorized users can access specific pages (AuthGuard), creating parameterized URLs, and managing page metadata.
-
-### **Getting Started**
-
-In contrast to React’s bear-bones approach to building web apps, Angular’s highly structured approach can seem overwhelming. Before you can write any Angular code, you must first install Angular’s command line interface.
-
-```bash
-npm install \-g @angular/cli
-```
-
-Next, we run ng new to create a new project and accept the default options. Note that when asked for a template format, choose SCSS.
-
-```bash
-ng new ng-task-demo-app
-```
+### **Removing Boilerplate Code**
 
 Now, let's open src/app/app.component.html, apart from the router-outlet tag, and remove all the boilerplate code from this file.
 
-```html
-<router-outlet />
-```
+```<router-outlet /\>```
 
 To ensure consistent presentation across application components we will update src/styles.scss. Open the file and add the following.
 
-```css
-body { text-align: center;}
-```
+`body { text-align: center;}`
 
 ### **Creating Components**
 
@@ -135,14 +40,11 @@ ng generate component login
 
 The command generates the following components.
 
-![folder](folder.png)
+![aa-02-02](aa-03-03.png)
 
 An Angular component is a TypeScript file that includes three things. The first of these is a set of references to framework modules and other application resources.
 
-```javascript
-import { Component } from '@angular/core';
-```
-
+`import { Component } from '@angular/core';`  
 Following the references is an @Component directive. Angular directives come in many forms and they provide different types of functionality. The @Component directive defines component-specific metadata, such as the component’s selector (name) and the component modules it imports. It also includes references to the component template and template-specific styling. The component template can be the component's HTML code and Angular directive, or it can be a link to a file. Likewise, component styling can be either style-sheet code or a link to a component stylesheet.
 
 ```javascript
@@ -157,15 +59,11 @@ Following the references is an @Component directive. Angular directives come in 
 
 The final and largest part of the component is the component class. The class contains component variables and logic
 
-```javascript
-export class LoginComponent {}
-```
+`export class LoginComponent {}`  
 
 Run the command again to create the Tasks component.
 
-```bash
-ng generate component tasks
-```
+`ng generate component tasks`
 
 ### **Adding Routes**
 
@@ -184,33 +82,30 @@ In the Routes object, we will add a route for each component. Each path has two 
 
 ```javascript
 export const routes: Routes = [
-{ path: 'login', component: LoginComponent },
-{ path: 'tasks', component: TasksComponent },
+ { path: 'login', component: LoginComponent },
+ { path: 'tasks', component: TasksComponent },
 ];
 ```
+
 Let’s launch the app and see what happens. At the command line, type
 
-```bash
-ng serve
-```
+`ng serve`
 
-Click the local to open the app in a browser. The browser displays a blank page. In the browser’s address bar, type /login. 
+![aa-02-04](aa-02-04.png)
 
-![run](run.png)
+Click the local to open the app in a browser. The browser displays a blank page. In the browser’s address bar, type /login. You should see the following.
 
-You should see the following.
+![aa-02-05](aa-02-05.png)
 
 Refresh your browser, and you should be able to navigate from the Login page to the Tasks page and back.
-
-![login](login.png)
 
 To ensure that this page opens when we launch the app, we will add a default path.
 
 ```javascript
 export const routes: Routes = [
-{ path: '', redirectTo: '/login', pathMatch: 'full' },
-{ path: 'login', component: LoginComponent },
-{ path: 'tasks', component: TasksComponent },
+ { path: '', redirectTo: '/login', pathMatch: 'full' },
+ { path: 'login', component: LoginComponent },
+ { path: 'tasks', component: TasksComponent },
 ];
 ```
 
@@ -220,17 +115,13 @@ Now, when the application is launched, the Login page opens.
 
 With our Login and Tasks pages in place, we add links to navigate from one page to another. Angular lets you navigate between components with the RouterLink directive.
 
-FIrst, open login.component.ts and add the following reference.
+FIrst, open login.component.ts and add the following reference. 
 
-```javascript
-import { RouterLink } from '@angular/router';
-```
+`import { RouterLink } from '@angular/router';`
 
 In @Component, add RouterLink to the imports array.
 
-```javascript
-imports: [RouterLink],
-```
+ `imports: [RouterLink],`
 
 Now open login.component.html and add the following.
 
@@ -240,4 +131,8 @@ Now open login.component.html and add the following.
 <p><a routerLink="/tasks">Tasks</a></p>
 ```
 
-Do the same for the Tasks page.
+Do the same for the Tasks page, but change the page text accordingly.
+
+## **Conclusion and What’s Next**
+
+In this installment, we introduced you to the theory and practice of routing in Angular. Next, we removed our apps boilerplate markup and added two page components: Login and Tasks. Then, we used routing to add links to navigate from one page to the other. In the next installment, we will discuss user interaction and forms.
