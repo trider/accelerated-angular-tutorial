@@ -40,11 +40,12 @@ ng generate component login
 
 The command generates the following components.
 
-![aa-02-02](aa-03-03.png)
+![aa-02-03](aa-02-03.png)
 
 An Angular component is a TypeScript file that includes three things. The first of these is a set of references to framework modules and other application resources.
 
 `import { Component } from '@angular/core';`  
+
 Following the references is an @Component directive. Angular directives come in many forms and they provide different types of functionality. The @Component directive defines component-specific metadata, such as the component’s selector (name) and the component modules it imports. It also includes references to the component template and template-specific styling. The component template can be the component's HTML code and Angular directive, or it can be a link to a file. Likewise, component styling can be either style-sheet code or a link to a component stylesheet.
 
 ```javascript
