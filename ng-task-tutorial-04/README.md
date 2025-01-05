@@ -1,6 +1,6 @@
 # **Accelerated Angular Part 4: Components and Presenting Data**
 
-In [Part Three](https://www.linkedin.com/pulse/accelerated-angular-part-3-forms-user-interaction-jonathan-gold-pyjyf/), we added a form to the Login page. The form enabled a user to type their email address and password. In this installment, we will add a table to the page and display a list of tasks assigned to the user. 
+In [Part Three](https://www.linkedin.com/pulse/accelerated-angular-part-3-forms-user-interaction-jonathan-gold-pyjyf/), we added a form to the Login page. The form enabled a user to type their email address and password. In this installment, we will add a table to the page and display a list of tasks assigned to the user.
 
 ![aa-04-01](aa-04-01.png)
 
@@ -82,46 +82,59 @@ constructor() { }
 ngOnInit(): void {}
 ```
 
-Will use ngOnInit to retrieve the persisted user profile from the browser’s session storage. The profile is assigned to the user object.
+We will use ngOnInit to retrieve the persisted user profile from the browser’s session storage. The profile is assigned to the user object.
 
-`ngOnInit(): void {`  
-  `this.user = JSON.parse(sessionStorage.getItem('user') || '{}');`  
-`}`  
+```javascript
+ngOnInit(): void {
+  this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
+}
+```
+
 Finally, we filter the tasks object to include only tasks assigned to the authenticated user. The filtered tasks list is assigned to the tableData object. This object will be displayed in a table in the .html page.
 
-`this.tableData = this.tasks.filter((task:any) =>`  
-  `task.user === this.user.userName`  
-`);`
+```javascript
+this.tableData = this.tasks.filter((task:any) =>
+  task.user === this.user.userName
+);
+```
 
 ## **Presenting Tasks Data**
 
 Open tasks.component.ts, and replace the file’s content with the following
 
-`<div class="container" >`  
- `<h1>Tasks</h1>`  
- `<p><a routerLink="/login">Go to login</a></p>`  
-`</div>`
+```html
+<div class="container" >
+ <h1>Tasks</h1>
+ <p><a routerLink="/login">Go to login</a></p>
+</div>
+```
 
 Following the \<h1\>Tasks\</h1\>, add a table.
 
-`<h1>Tasks</h1>`  
-`<table></table>`
+```html
+<h1>Tasks</h1>
+<table></table>
+```
 
 In the table, add a table header with a single row. By embedding a \*ngFor directive in a \<th\> tag, we iterate through the tableCols object using cols as iterator. Using double braces, each value in tableCols is displayed using interpolation. To convert the col from lower to title case, we apply the titlecase pipe. This was made possible by referencing the CommonModule.
 
-`<thead>`  
- `<tr>`  
-  `<th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>`  
- `</tr>`  
-`</thead>`
+```html
+<thead>
+ <tr>
+  <th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>
+ </tr>
+</thead>
+```
 
 After the table header, we add a table body with a single row and a single \<td\> tag. Here, we embed two \*ngFor directive. The first directive iterates through the tasks list. The second iterates through the tableCols object and only displays each field in the object.
 
-`<tbody>`  
- `<tr *ngFor="let item of tableData">`  
-  `<td *ngFor="let col of tableCols">{{item[col]}}</td>`  
- `</tr>`  
- `</tbody>`
+```html
+<tbody>
+ <tr *ngFor="let item of tableData">
+  <td *ngFor="let col of tableCols">{{item[col]}}</td>
+ </tr>
+ </tbody>
+```
 
 When you refresh the page in the browser, you should see a list of the user’s tasks displayed.
 

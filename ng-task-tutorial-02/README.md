@@ -1,4 +1,4 @@
-# **Accelerated Angular for React Developers Part 2: Building and Linking Pages**
+# **Accelerated Angular Part 2: Building and Linking Pages**
 
 In [Part One](https://www.linkedin.com/pulse/accelerated-angular-part-1-getting-started-jonathan-gold-08uxf/), we briefly introduced Angular and got to work by installing the CLI. This allowed us to build and run a boilerplate project. In this installment, we build the foundations of our task management application. We will create two pages. The first is a placeholder Login page with a title and link to the application’s Tasks page.
 
@@ -16,11 +16,11 @@ In this section, we examine a key concept in Angular called routing, and how Ang
 
 ### **Routing**
 
-In a web application, routing refers to how a user navigates from point A to point B. In most cases, the user lands on the home page and clicks on a link to the page they are interested in. Once the target page is displayed, they can return to the home via the browser’s back button or explore links to other pages displayed on any page or through navigation elements, such as a top bar or side menu. 
+In a web application, routing refers to how a user navigates from point A to point B. In most cases, the user lands on the home page and clicks on a link to the page they are interested in. Once the target page is displayed, they can return to the home via the browser’s back button or explore links to other pages displayed on any page or through navigation elements, such as a top bar or side menu.
 
 ### **Angular Router**
 
-Since the release of Angular 2.0, routing in Angular is handled by a built-in routing component. Once you achieve a basic understanding of Angular routing, you realize that routing is more than a navigation mechanism, it defines the structure of your application and provides a hierarchical map of how each part links together. In addition to letting you navigate from one page to another, Angular’s router has many powerful and useful features. These features include a mechanism that ensures only authorized users can access specific pages (AuthGuard), creating parameterized URLs, and managing page metadata. 
+Since the release of Angular 2.0, routing in Angular is handled by a built-in routing component. Once you achieve a basic understanding of Angular routing, you realize that routing is more than a navigation mechanism, it defines the structure of your application and provides a hierarchical map of how each part links together. In addition to letting you navigate from one page to another, Angular’s router has many powerful and useful features. These features include a mechanism that ensures only authorized users can access specific pages (AuthGuard), creating parameterized URLs, and managing page metadata.
 
 ### **Removing Boilerplate Code**
 
@@ -116,7 +116,7 @@ Now, when the application is launched, the Login page opens.
 
 With our Login and Tasks pages in place, we add links to navigate from one page to another. Angular lets you navigate between components with the RouterLink directive.
 
-FIrst, open login.component.ts and add the following reference. 
+FIrst, open login.component.ts and add the following reference.
 
 `import { RouterLink } from '@angular/router';`
 

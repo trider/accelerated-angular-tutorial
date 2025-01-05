@@ -1,6 +1,6 @@
 # **Angular for React Developers Part 3: Components and Presenting Data**
 
-In the second part of this series, we added a form to the Login page. The form enabled a user to type their email address and password. 
+In the second part of this series, we added a form to the Login page. The form enabled a user to type their email address and password.
 
 ![Login Page](react-task-tutorial-02-login.png)
 
@@ -140,7 +140,6 @@ Open tasks.component.ts, and replace the file’s content with the following:
 ```
 
 Following the \<h1\>Tasks\</h1\>, add a table.
-
 
 ```html
 <h1>Tasks</h1>
