@@ -1,56 +1,26 @@
-# **Angular for React Developers Part 3: Components and Presenting Data**
+# **Accelerated Angular Part 4: Components and Presenting Data**
 
-In the second part of this series, we added a form to the Login page. The form enabled a user to type their email address and password.
+In [Part Three](https://www.linkedin.com/pulse/accelerated-angular-part-3-forms-user-interaction-jonathan-gold-pyjyf/), we added a form to the Login page. The form enabled a user to type their email address and password. In this installment, we will add a table to the page and display a list of tasks assigned to the user.
 
-![Login Page](react-task-tutorial-02-login.png)
+![aa-04-01](aa-04-01.png)
 
-When the user presses Submit, the app checks the submitted credentials and authenticates the user. If the user’s credentials are valid, the application displays a message and navigates to the Task page. Now we will add a table to the page and display a list of tasks assigned to the user.
+## **Key Concept**
 
-![Tasks Page](ng-task-tutorial-03-tasks.png)
+In this section, we explain components, directives, and data-binding.
 
-For now, the page only displays a table with basic task information. In future installments, we will create the functionality to add, edit, and delete tasks. As with [Part 2](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-02), I have simplified the process of building the page by providing a list of tasks in a Javascript file. All the files referenced in this article, and the sample [React](https://github.com/trider/react-task-tutorial/tree/main/react-task-tutorial-03) and [Angular](https://github.com/trider/ng-task-tutorial/tree/main/ng-task-tutorial-03) code are available from GitHub.
+### **Components**
 
-## **React Components and Data Presentation**
+Components are the fundamental building blocks of an Angular application. Each web page in an Angular web app is a component. Each component can contain multiple sub-components. For example, a page may have a header, tables, forms, etc. In an Angular component, there is a clear separation between the presentational elements, component model, and code. Presentation elements use HTML and Angular directives, and the component model and computation use Typescript. This will become more apparent when we update tasks.component.html.
 
-As with Routing and Forms, React’s approach to building components and displaying data has many parallels to its Angular equivalent. Conversely, these parallels also highlight each framework’s contrasting approach. First, you declare all the referenced components at the top of the file. In this case, the userTasks file is the list of tasks and tableCols is the name of each table column.
+### **Directives**
 
-```javascript
-import { Link } from "react-router-dom";
-import userTasks from "../data/tasks";
-import tableCols from "../data/cols";
-import "./_pages.css";
-```
+Directives are classes that add additional behavior to elements in your Angular applications. There are three types:
 
-Following the references, you create the component definition. This is a single function that returns the entire component. This is written with React’s unique JavaScript XML (JSX) syntax. JSX presents data by mixing static HTML elements with Javascript code. For example, the following displays the table's top row. Inside the \<tr\>\</tr\> tags there are a pair of {} braces. Within the braces, the code uses a .map method to iterate through the list of column names and display them.
+* **Components**: Directives with templates.  
+* **Structural Directives**: Alter the DOM layout by adding or removing elements (\*ngIf, \*ngFor, \*ngSwitch).  
+* **Attribute Directives**: Change the appearance or behavior of an element (\[ngStyle\], \[ngClass\]).
 
-```javascript
-const Tasks = () => {
- return (
-   <div>
-    <h1>Tasks</h1>
-     <table>
-      <thead>
-       <tr>{tableCols.map((col) => ( <th key={col}>{col}</th>))}</tr>
-      </thead>
-      <tbody> {userTasks.map((task) => (
-        <tr key={task.id}>{tableCols.map((col) => (
-         <td key={col}>{task[col.toLowerCase()]}</td>
-        ))}</tr>
-       ))}
-    </tbody>
-   </table>
-   <p><Link to="/">Logout</Link></p>
-  </div>
- );
-};
-export default Tasks;
-```
-
-## **Angular Components and Data Presentation**
-
-In an Angular component, there is a clear separation between the presentational elements, component model, and code. Presentation elements use HTML and Angular directives, and the component model and computation use Typescript. This will become more apparent when we update tasks.component.html.
-
-### **Getting Started**
+## **Building the Tasks Page**
 
 Let’s start by opening src/app/tasks.component.ts. In the first reference, add a reference to OnInit. This is an Angular lifecycle method that is used to initialize components, such as fetching data.
 
@@ -82,7 +52,7 @@ Next, we update @Component’s imports list to include CommonModule.
 })
 ```
 
-### **Extending TasksComponent**
+## **Extending TasksComponent**
 
 After we have referenced the relevant components and files, we will extend the TasksComponent class so we can add a ngOnInit method. We extend the component class with the implements keyword, followed by OnInt.
 
@@ -90,7 +60,7 @@ After we have referenced the relevant components and files, we will extend the T
 export class TasksComponent implements OnInit {}
 ```
 
-### **Declaring Task and User Data**
+## **Declaring Task and User Data**
 
 Now let’s add the following variables. The tasks object is assigned the data from the imported Tasks list. Since we only want to display tasks created or assigned to the authenticated user, we will filter the tasks list by username and assign the data to the tableData object. The tableCols object is a list of the names of each table column. The user object holds the authenticated user profile.
 
@@ -103,7 +73,7 @@ export class TasksComponent implements OnInit {
 }
 ```
 
-### **Initializing the TasksComponent**
+## **Initializing the Tasks Component**
 
 Following the variable declarations, we add a constructor method. While we are not currently using the constructor, we will need it in the future to consume Angular services. After the constructor, we add an empty ngOnInit method.
 
@@ -112,11 +82,11 @@ constructor() { }
 ngOnInit(): void {}
 ```
 
-Will use ngOnInit to retrieve the persisted user profile from the browser’s session storage. The profile is assigned to the user object.
+We will use ngOnInit to retrieve the persisted user profile from the browser’s session storage. The profile is assigned to the user object.
 
 ```javascript
 ngOnInit(): void {
- this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
+  this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
 }
 ```
 
@@ -124,13 +94,13 @@ Finally, we filter the tasks object to include only tasks assigned to the authen
 
 ```javascript
 this.tableData = this.tasks.filter((task:any) =>
- task.user === this.user.userName
+  task.user === this.user.userName
 );
 ```
 
-### **Presenting Tasks Data**
+## **Presenting Tasks Data**
 
-Open tasks.component.ts, and replace the file’s content with the following:
+Open tasks.component.ts, and replace the file’s content with the following
 
 ```html
 <div class="container" >
@@ -156,16 +126,20 @@ In the table, add a table header with a single row. By embedding a \*ngFor direc
 </thead>
 ```
 
-After the table header, we add a table body with a single row and a single \<td\> tag. Here we embed two \*ngFor directive. The first directive iterates through the tasks list. The second iterates through the tableCols object and only displays each field in the object.
+After the table header, we add a table body with a single row and a single \<td\> tag. Here, we embed two \*ngFor directive. The first directive iterates through the tasks list. The second iterates through the tableCols object and only displays each field in the object.
 
 ```html
 <tbody>
  <tr *ngFor="let item of tableData">
   <td *ngFor="let col of tableCols">{{item[col]}}</td>
  </tr>
-</tbody>
+ </tbody>
 ```
 
 When you refresh the page in the browser, you should see a list of the user’s tasks displayed.
 
-![Tasks Page](ng-task-tutorial-03-tasks.png)
+![aa-04-01](aa-04-01.png)
+
+## **Conclusion and What’s Next**
+
+In this installment, introduced Angular Components and Directives. We then showed you how to implement them by extending the Tasks component to display a table with all the tasks assigned to the authenticated user. In the next installment, we will look at how to improve our app's appearance with theming.
