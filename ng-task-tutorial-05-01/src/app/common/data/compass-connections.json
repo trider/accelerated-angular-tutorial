@@ -1,0 +1,155 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "1bbb6376-5fb3-49e6-bf78-e68a82fecbee",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1698757566121"
+        }
+      },
+      "favorite": {
+        "name": "27016"
+      },
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27016/",
+        "oidc": {}
+      },
+      "savedConnectionType": "favorite"
+    },
+    {
+      "id": "339215be-0afa-46e4-b15e-f54930f572b6",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1715166168464"
+        }
+      },
+      "favorite": {
+        "name": "Atlas"
+      },
+      "savedConnectionType": "favorite",
+      "connectionOptions": {
+        "connectionString": "mongodb+srv://jonnygold@cluster0.jlwmt.mongodb.net/?authMechanism=SCRAM-SHA-256",
+        "useSystemCA": true,
+        "oidc": {}
+      }
+    },
+    {
+      "id": "6404b756-329b-453e-abc7-08a0e01db8b3",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1714891319810"
+        }
+      },
+      "favorite": {
+        "name": "Remote 27019"
+      },
+      "savedConnectionType": "favorite",
+      "connectionOptions": {
+        "connectionString": "mongodb://127.0.0.1:27019/?readPreference=primary&directConnection=true",
+        "oidc": {}
+      }
+    },
+    {
+      "id": "a338e772-d4db-4925-8292-ffc8359ad351",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1701165150168"
+        }
+      },
+      "favorite": {
+        "name": "Remote 27023"
+      },
+      "connectionOptions": {
+        "connectionString": "mongodb://127.0.0.1:27021/?readPreference=primary&directConnection=true",
+        "oidc": {}
+      },
+      "savedConnectionType": "favorite"
+    },
+    {
+      "id": "ad632fd9-3212-4c57-a9d7-0e3fc899e5d6",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1715163038949"
+        }
+      },
+      "favorite": {
+        "name": "localhost",
+        "color": "#326fde"
+      },
+      "savedConnectionType": "favorite",
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27017/",
+        "useSystemCA": true,
+        "oidc": {}
+      }
+    },
+    {
+      "id": "b2cdf234-2f0d-43f0-978b-6fbd6e88e9b5",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1704623409082"
+        }
+      },
+      "favorite": {
+        "name": "Remote 27021"
+      },
+      "connectionOptions": {
+        "connectionString": "mongodb://127.0.0.1:27021/?readPreference=primary&directConnection=true",
+        "oidc": {}
+      },
+      "savedConnectionType": "favorite"
+    },
+    {
+      "id": "ca4878ae-0617-401a-be0d-492ea4e4ed3e",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1707402884104"
+        }
+      },
+      "favorite": {
+        "name": "Remote 27020"
+      },
+      "connectionOptions": {
+        "connectionString": "mongodb://127.0.0.1:27020/?readPreference=primary&directConnection=true",
+        "oidc": {}
+      },
+      "savedConnectionType": "favorite"
+    },
+    {
+      "id": "d7fb19dc-8e09-4584-be92-46433fd07275",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1710166730347"
+        }
+      },
+      "favorite": {
+        "name": "Remote 27018"
+      },
+      "savedConnectionType": "favorite",
+      "connectionOptions": {
+        "connectionString": "mongodb://127.0.0.1:27018/?readPreference=primary&directConnection=true",
+        "oidc": {}
+      }
+    },
+    {
+      "id": "e75723d2-1423-4028-a540-58f1959b1129",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1702451187013"
+        }
+      },
+      "favorite": {
+        "name": "Remote 27011"
+      },
+      "connectionOptions": {
+        "connectionString": "mongodb://127.0.0.1:27018/?readPreference=primary&directConnection=true",
+        "oidc": {}
+      },
+      "savedConnectionType": "favorite"
+    }
+  ]
+}

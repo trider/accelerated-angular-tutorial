@@ -1,0 +1,65 @@
+<div class="container container-fluid" style="padding: 10px">
+ <ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-center" id="modal-basic-title">{{title}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form class="form" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="taskName">Name</label>
+        <input type="text" class="form-control" id="taskName" placeholder="Enter Task Name" formControlName="name">
+      </div>
+      <div class="mb-3">
+        <label for="taskDescription">Description</label>
+        <input type="text" class="form-control" id="taskDescription" placeholder="Enter Task Description"
+          formControlName="description">
+      </div>
+      <div class="mb-3" *ngIf="title === 'Edit Task'">
+        <label for="taskDescription">Status</label>
+        <select class="form-select" formControlName="status">
+          <option *ngFor="let item of taskStatus" [value]="item">{{item}}</option>
+        </select>
+
+      </div>
+      <div class="text-center d-grid">
+        <button type="submit" class="btn btn-primary rounded-pill ">Submit</button>
+      </div>
+    </form>
+  </div>
+
+</ng-template>
+ <table class="table table-striped" style="background-color:white">
+  <thead>
+   <tr>
+    <th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>
+    <!-- <th scope="col">Actions</th> -->
+   </tr>
+  </thead>
+  <tbody>
+   <tr *ngFor="let item of tableData">
+    <td *ngFor="let col of tableCols">{{item[col]}}</td>
+    <td>
+     <button class="btn btn-primary rounded-pill" (click)="openModal(content, 'Edit Task', item)"
+      style="margin-right: 5px;">
+      Edit
+     </button>
+     <button class="btn btn-danger rounded-pill" (click)="deleteItem(item)">
+ 
+      Delete
+     </button>
+    </td>
+   </tr>
+  </tbody>
+  <tfoot>
+   <tr>
+    <td colspan="6">
+     <div class="d-grid gap-2 d-md-flex justify-content-md-center" >
+      <button class="btn btn-primary rounded-pill " (click)="openModal(content, 'Add Task')">Add Task</button>
+     
+     </div>
+    </td>
+   </tr>
+  </tfoot>
+ </table> 
+</div>

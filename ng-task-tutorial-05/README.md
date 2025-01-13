@@ -1,145 +1,126 @@
-# **Accelerated Angular Part 4: Components and Presenting Data**
+# **Accelerated Angular Part 5: Styling with Bootstrap**
 
-In [Part Three](https://www.linkedin.com/pulse/accelerated-angular-part-3-forms-user-interaction-jonathan-gold-pyjyf/), we added a form to the Login page. The form enabled a user to type their email address and password. In this installment, we will add a table to the page and display a list of tasks assigned to the user.
+In [Part Four](https://www.linkedin.com/pulse/accelerated-angular-part-4-components-presenting-data-jonathan-gold-iatdf/), we introduced Angular Components and Directives. We then showed you how to implement them by extending the Tasks component to display a table with all the tasks assigned to the authenticated user. At this point, our code is functional, but our pages could be prettier. Let’s face it: most developers, myself included, are not web designers, so we need some help from that department. The good news is that we don’t have to be, and there are a number of available solutions. In this installment, we dive into one of those solutions and investigate how we can use Bootstrap to make our app look and feel more professional. The sample code for this installment is available on [GitHub](https://github.com/trider/rapid-react-tutorial/tree/76624d7d8df10986c6152f5b2a85b503e4255751/rapid-react-tutorial-05).
 
-![aa-04-01](aa-04-01.png)
+## **Key Concepts**
 
-## **Key Concept**
+In this section, we provide background and context on CSS and Bootstrap.
 
-In this section, we explain components, directives, and data-binding.
+### **CSS**
 
-### **Components**
+[Cascading Style Sheets (CSS)](https://developer.mozilla.org/en-US/docs/Web/CSS) is a language for managing the appearance of web pages. It allows you to separate the presentation of those pages from its underlying (HTML) content. CSS defines selectors that map to individual HTML elements. For each element, you can set properties (attributes) and the values to set for the properties. In the following example, we put the color and weight of a top-level heading (H1) element.
 
-Components are the fundamental building blocks of an Angular application. Each web page in an Angular web app is a component. Each component can contain multiple sub-components. For example, a page may have a header, tables, forms, etc. In an Angular component, there is a clear separation between the presentational elements, component model, and code. Presentation elements use HTML and Angular directives, and the component model and computation use Typescript. This will become more apparent when we update tasks.component.html.
-
-### **Directives**
-
-Directives are classes that add additional behavior to elements in your Angular applications. There are three types:
-
-* **Components**: Directives with templates.  
-* **Structural Directives**: Alter the DOM layout by adding or removing elements (\*ngIf, \*ngFor, \*ngSwitch).  
-* **Attribute Directives**: Change the appearance or behavior of an element (\[ngStyle\], \[ngClass\]).
-
-## **Building the Tasks Page**
-
-Let’s start by opening src/app/tasks.component.ts. In the first reference, add a reference to OnInit. This is an Angular lifecycle method that is used to initialize components, such as fetching data.
-
-```javascript
-import { Component, OnInit } from '@angular/core';
-```
-
-After the first reference, add a reference to the CommonModule. This will enable us to use Angular’s pipe functionality to format data.
-
-```javascript
-import { CommonModule } from '@angular/common';
-```
-
-Then, add a reference to the Tasks.ts data file. This file is the list of tasks assigned to the user. You can download the file from [GitHub](https://github.com/trider/ng-task-tutorial).
-
-```javascript
-import { Tasks } from '../data/tasks';
-```
-
-Next, we update @Component’s imports list to include CommonModule.
-
-```javascript
-@Component({
- selector: 'app-tasks',
- standalone: true,
- imports: [CommonModule,RouterLink],
- templateUrl: './tasks.component.html',
- styleUrl: './tasks.component.scss'
-})
-```
-
-## **Extending TasksComponent**
-
-After we have referenced the relevant components and files, we will extend the TasksComponent class so we can add a ngOnInit method. We extend the component class with the implements keyword, followed by OnInt.
-
-```javascript
-export class TasksComponent implements OnInit {}
-```
-
-## **Declaring Task and User Data**
-
-Now let’s add the following variables. The tasks object is assigned the data from the imported Tasks list. Since we only want to display tasks created or assigned to the authenticated user, we will filter the tasks list by username and assign the data to the tableData object. The tableCols object is a list of the names of each table column. The user object holds the authenticated user profile.
-
-```javascript
-export class TasksComponent implements OnInit {
- tasks:any = Tasks;
- tableData:any = null
- tableCols: any = ['name','description','added','updated','status'];
- user:any = null;
+```css
+h1 {
+    color:red;
+    font-weight: bold;
 }
 ```
 
-## **Initializing the Tasks Component**
+In addition to mapping to HTML elements, you can create class selectors that apply to a group of elements. You can also target specific elements by creating ID selectors.
 
-Following the variable declarations, we add a constructor method. While we are not currently using the constructor, we will need it in the future to consume Angular services. After the constructor, we add an empty ngOnInit method.
+### **Bootstrap**
 
-```javascript
-constructor() { }
-ngOnInit(): void {}
-```
+[Bootstrap](https://getbootstrap.com/) is a popular, flexible, and easy-to-use CSS framework. It was created by Twitter and made available as an open-source project. Bootstrap was designed to operate with Javascript, and specific versions are available for popular frameworks, such as React, Angular, and Vue.js. We will be using [NG Bootstrap](https://ng-bootstrap.github.io/#/home).
 
-We will use ngOnInit to retrieve the persisted user profile from the browser’s session storage. The profile is assigned to the user object.
+## **Installing Bootstrap**
 
-```javascript
-ngOnInit(): void {
-  this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
-}
-```
+You can install NG Bootstrap with the [Angular CLI ng add](https://angular.dev/cli/add) command. In your IDE’s integrated terminal, open the project folder and type:
 
-Finally, we filter the tasks object to include only tasks assigned to the authenticated user. The filtered tasks list is assigned to the tableData object. This object will be displayed in a table in the .html page.
+ng add @ng-bootstrap/ng-bootstrap
 
-```javascript
-this.tableData = this.tasks.filter((task:any) =>
-  task.user === this.user.userName
-);
-```
+If this doesn’t work, follow the detailed instructions on the NG Bootstrap website’s [Getting Started page](https://ng-bootstrap.github.io/#/getting-started). Now, all you need to do is update src/styles.scss. If you are using Angular 19, add the following to the top of the file
 
-## **Presenting Tasks Data**
+`@use "bootstrap/scss/bootstrap";`
 
-Open tasks.component.ts, and replace the file’s content with the following
+If you are using an earlier Angular version, replace `@use` with `@import`:
+
+## **Applying Bootstrap to the Login Page**
+
+Before we installed Bootstrap, our login page looked like this:
+
+![aa-05-01](aa-05-01.png)
+
+After installing and referencing Bootstrap, it looks like this:
+
+![aa-05-02](aa-05-02.png)
+
+It looks similar to the original version, with minor changes to some elements. Now, let’s comment out the original styles in src/styles.scss. After refreshing the page, it looks like this:
+
+![aa-05-03](aa-05-03.png)
+
+The box that surrounded the form disappeared, and the form was shoved to the left edge of the page. Now, let’s replace our existing Login page with an improved Bootstrap version. Open src/app/login/login.component.html and replace the current contents of the file with the following: 
 
 ```html
-<div class="container" >
- <h1>Tasks</h1>
- <p><a routerLink="/login">Go to login</a></p>
+<div class="container d-lg-flex">
+ <div class="mx-auto p-2" style="margin-top: 100px;width:40%"></div>
 </div>
 ```
 
-Following the \<h1\>Tasks\</h1\>, add a table.
+This adds a flexible container element that can expand and contract in relation to the browser window. Inside the container, we added a div element that will position the form elements on the page. Next, let’s add a card component to hold our login form.
 
 ```html
-<h1>Tasks</h1>
-<table></table>
+<div class="container d-lg-flex">
+ <div class="mx-auto p-2" style="margin-top: 100px;width:40%">
+  <div class="card">
+    <div class="card-header bg-primary">
+       <h4 class="text-light text-center">Task App</h4>
+     </div>
+     <div class="card-body"></div>
+     <div class="card-footer bg-primary text-light text-center">Please login to continue</div>
+   </div>
+ </div>
+</div>
 ```
 
-In the table, add a table header with a single row. By embedding a \*ngFor directive in a \<th\> tag, we iterate through the tableCols object using cols as iterator. Using double braces, each value in tableCols is displayed using interpolation. To convert the col from lower to title case, we apply the titlecase pipe. This was made possible by referencing the CommonModule.
+The Card’s header includes a header and footer. The header displays the Application name, and the footer provides instructions.
+
+![aa-05-04](aa-05-04.png)
+
+In the card’s body section, let’s add our form with the appropriate Bootstrap CSS classes.
 
 ```html
-<thead>
- <tr>
-  <th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>
- </tr>
-</thead>
+<div class="card-body">
+ <form [formGroup]="loginForm" class="form" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+   <label class="form-label">Email</label>
+   <input class="form-control" formControlName="email">
+  </div>
+  <div class="mb-3">
+   <label class="form-label">Password</label>
+   <input class="form-control" formControlName="password" type="password">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+ </form>
+</div>
 ```
 
-After the table header, we add a table body with a single row and a single \<td\> tag. Here, we embed two \*ngFor directive. The first directive iterates through the tasks list. The second iterates through the tableCols object and only displays each field in the object.
+When we refresh the page, it looks much improved.
+
+![aa-05-05](aa-05-05.png)
+
+## **Updating the Tasks Page**
+
+Before we applied Bootstrap, the Tasks page looked like this:
+
+![aa-04-01](aa-04-01-02.png)
+
+Using our updated Login page, let’s log in and view our user’s assigned tasks. The Tasks page now looks like this:
+
+![aa-05-06](aa-05-06.png)
+
+This is a slight improvement, but it’s still not taking full advantage of Bootstrap. 
+
+Open src/app/tasks/tasks.component.html. Modify the opening table tag by adding the following Bootstrap CSS classes.
 
 ```html
-<tbody>
- <tr *ngFor="let item of tableData">
-  <td *ngFor="let col of tableCols">{{item[col]}}</td>
- </tr>
- </tbody>
+<table class="table table-striped>
 ```
 
-When you refresh the page in the browser, you should see a list of the user’s tasks displayed.
+Now the table looks like this.
 
-![aa-04-01](aa-04-01.png)
+![aa-05-06](aa-05-07.png)
 
 ## **Conclusion and What’s Next**
 
-In this installment, introduced Angular Components and Directives. We then showed you how to implement them by extending the Tasks component to display a table with all the tasks assigned to the authenticated user. In the next installment, we will look at how to improve our app's appearance with theming.
+In this installment, showed you the basics of Cascading Style Sheets (CSS) and how to use them to change how our app looks. We then introduced Bootstrap and how we can use it to improve the appearance of our simple HTML pages. In the next installment, we will continue to use Bootstrap as we explain how to create and style reusable Angular components.
