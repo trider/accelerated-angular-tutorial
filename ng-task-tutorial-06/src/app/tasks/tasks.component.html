@@ -1,7 +1,8 @@
 <app-navbar></app-navbar>
-<div class="container" >
-  <h1>Tasks</h1>
-  <table class="table table-striped" style="background-color:white">
+<div class="container mt-5" >
+  <app-profile [user]="user"></app-profile>
+  <!-- <h1>Tasks</h1> -->
+  <table class="table table-striped w-100">
     <thead>
      <tr>
       <th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>
@@ -12,6 +13,16 @@
       <td *ngFor="let col of tableCols">{{item[col]}}</td>
      </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="6">
+          <app-modal (addTaskEvent)="addTask($event)"></app-modal>
+        </td>
+
+    </tfoot>
    </table> 
+   <p>
+    <!-- <a routerLink="/login">Go to login</a> -->
+  </p>
 </div>
 <app-footer></app-footer>

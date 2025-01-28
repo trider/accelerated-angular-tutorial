@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl} from "@angular/forms";
 import { Users } from '../data/users';
 
@@ -7,6 +7,7 @@ import { Users } from '../data/users';
   selector: 'app-login',
   standalone: true,
   imports: [
+    // RouterLink,
     ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
