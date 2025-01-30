@@ -14,13 +14,6 @@
        <input type="text" class="form-control" id="taskDescription" placeholder="Enter Task Description"
          formControlName="description">
      </div>
-     <div class="mb-3" *ngIf="title === 'Edit Task'">
-       <label>Status</label>
-       <select class="form-select" formControlName="status">
-         <option *ngFor="let item of taskStatus" [value]="item">{{item}}</option>
-       </select>
-
-     </div>
      <div class="text-center d-grid">
        <button type="submit" class="btn btn-primary rounded-pill ">Submit</button>
      </div>
@@ -30,6 +23,6 @@
 </ng-template>
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
- <button class="btn btn-primary rounded-pill " (click)="openModal(content, title)">{{title}}</button>
+ <button class="btn btn-primary rounded-pill " (click)="openModal(content, 'Add Task')">Add Task</button>
 
 </div>

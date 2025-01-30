@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl} from "@angular/forms";
 import { Users } from '../data/users';
-import { HttpService } from '../services/http-service/http-service.service';
 
 @Component({
   selector: 'app-login',
@@ -10,9 +9,6 @@ import { HttpService } from '../services/http-service/http-service.service';
   imports: [
     // RouterLink,
     ReactiveFormsModule,
-  ],
-  providers: [
-    HttpService
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -28,20 +24,15 @@ export class LoginComponent {
   });
 
 
-  constructor( 
-    private router: Router,
-    public httpService: HttpService
-  
-  ) { }
+  constructor( private router: Router) { }
 
   onSubmit(){
-    this.httpService.postServiceData('/api/users/login', this.loginForm.value).subscribe((data: any) => {
-      if(data !==null){
-        this.user = data
-        sessionStorage.setItem('user', JSON.stringify(this.user));
-        this.router.navigate(['/tasks']);
-      }
-    });
+    this.user = this.users.filter((user:any) => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password)[0];
+    if(this.user !== null ){
+      sessionStorage.setItem('user', JSON.stringify(this.user));
+      this.router.navigate(['/tasks']);
+
+    }
   }
 
 }

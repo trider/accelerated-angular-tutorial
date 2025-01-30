@@ -1,0 +1,26 @@
+<div class="container d-lg-flex">
+
+  <div class="mx-auto p-2" style="margin-top: 100px;width:40%">
+    <div class="card">
+      <div class="card-header bg-primary">
+        <h4 class="text-light text-center">Task App</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="loginForm" class="form" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control" formControlName="email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input class="form-control" formControlName="password" type="password">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="card-footer bg-primary text-light text-center">
+        Please login to continue
+      </div>
+    </div>
+  </div>
+</div>

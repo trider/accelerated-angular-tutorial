@@ -29,7 +29,6 @@ export class LoginComponent {
   onSubmit(){
     this.user = this.users.filter((user:any) => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password)[0];
     if(this.user !== null ){
-      alert(`Email: ${this.user.email}\nPassword: ${this.user.password}`);
       sessionStorage.setItem('user', JSON.stringify(this.user));
       this.router.navigate(['/tasks']);
 

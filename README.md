@@ -9,3 +9,4 @@ In this series, I will show you how to get started with Angular and use it to bu
 * [Part 3](https://github.com/trider/accelerated-angular-tutorial/tree/6a8d8af879d63940148944770be05ef7be234723/ng-task-tutorial-03 "ng-task-tutorial-03"): User Interaction and Forms
 * [Part 4](https://github.com/trider/accelerated-angular-tutorial/tree/6a8d8af879d63940148944770be05ef7be234723/"ng-task-tutorial-04 "ng-task-tutorial-04"): Components and Presenting Data
 * [Part 5](https://github.com/trider/accelerated-angular-tutorial/tree/7a9e7a288585a3735bbb81733075cd748296173d/ng-task-tutorial-05 "ng-task-tutorial-05"): Styling with Bootstrap
+* [Part 6](https://github.com/trider/accelerated-angular-tutorial/tree/211acbfd99de9a67fcae438646f4d3ac19f23cdf/ng-task-tutorial-06 "ng-task-tutorial-06"): Styling with Bootstrap

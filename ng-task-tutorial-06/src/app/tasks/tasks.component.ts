@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-// import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Tasks } from '../data/tasks';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
-import { ProfileComponent } from '../components/profile/profile.component';
-import { ModalComponent } from '../components/modal/modal.component';
 
 
 @Component({
@@ -13,11 +10,8 @@ import { ModalComponent } from '../components/modal/modal.component';
   standalone: true,
   imports: [
     CommonModule,
-    // RouterLink,
     NavbarComponent,
     FooterComponent,
-    ProfileComponent,
-    ModalComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
@@ -36,18 +30,6 @@ export class TasksComponent implements OnInit {
     this.tableData = this.tasks.filter((task:any) => task.user === this.user.userName);
   }
 
-  addTask(task:any){
-    this.tableData = [
-      ...this.tableData,
-      {
-        ...task,
-        added: new Date().toISOString(),
-        updated: new Date().toISOString(), 
-        taskId: this.tableData.length + 1,
-        isActive: true,
-
-      }
-    ]
-  }
+ 
 
 }

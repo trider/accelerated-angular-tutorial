@@ -1,126 +1,183 @@
-# **Accelerated Angular Part 5: Styling with Bootstrap**
+# **Accelerated Angular Part 6: Creating Reusable Components**
 
-In [Part Four](https://www.linkedin.com/pulse/accelerated-angular-part-4-components-presenting-data-jonathan-gold-iatdf/), we introduced Angular Components and Directives. We then showed you how to implement them by extending the Tasks component to display a table with all the tasks assigned to the authenticated user. At this point, our code is functional, but our pages could be prettier. Let’s face it: most developers, myself included, are not web designers, so we need some help from that department. The good news is that we don’t have to be, and there are a number of available solutions. In this installment, we dive into one of those solutions and investigate how we can use Bootstrap to make our app look and feel more professional. The sample code for this installment is available on [GitHub](https://github.com/trider/rapid-react-tutorial/tree/76624d7d8df10986c6152f5b2a85b503e4255751/rapid-react-tutorial-05).
+In [Part Five](https://www.linkedin.com/pulse/accelerated-angular-part-4-components-presenting-data-jonathan-gold-iatdf/), we showed you the basics of Cascading Style Sheets (CSS) and how to use them to change how our app looks. We then introduced Bootstrap and how we can use it to improve the appearance of our simple HTML pages. In this installment, we will build on this foundation to add a page header that displays the name App and will let us return to the Login page. At the bottom of the page, we will provide a footer that displays copyright and version information.
 
-## **Key Concepts**
+![aa-06-01](aa-06-01.png)
 
-In this section, we provide background and context on CSS and Bootstrap.
+The sample code for this installment is available on [GitHub](https://github.com/trider/accelerated-angular-tutorial/tree/211acbfd99de9a67fcae438646f4d3ac19f23cdf/ng-task-tutorial-06).
 
-### **CSS**
+## **Key Concept**
 
-[Cascading Style Sheets (CSS)](https://developer.mozilla.org/en-US/docs/Web/CSS) is a language for managing the appearance of web pages. It allows you to separate the presentation of those pages from its underlying (HTML) content. CSS defines selectors that map to individual HTML elements. For each element, you can set properties (attributes) and the values to set for the properties. In the following example, we put the color and weight of a top-level heading (H1) element.
+In this section, we explain component metadata. You use this metadata to reference components.
 
-```css
-h1 {
-    color:red;
-    font-weight: bold;
+### **Component Metadata**
+
+Angular components provide information called metadata. This metadata is provided by the @Component decorator. This is located at the top of the component’s typescript file.  Here is the @Component decorator for the Tasks component (tasks.component.ts).
+
+```javascript
+@Component({  
+ selector: 'app-tasks',  
+ standalone: true,  
+ imports: [ CommonModule,RouterLink ],  
+ templateUrl: './tasks.component.html',  
+ styleUrl: './tasks.component.scss'  
+})
+```
+
+The component metadata includes the following elements:
+
+* **Selector:** The name of the component. The selector can be used as a reference to the component  
+* **Standalone:** Indicates that the component can be imported into other components.  
+* **Imports:** The packages, libraries, and components referenced by the component.
+* **URLs:** Location of related files, such as the component template HTML file and CSS style sheet.
+
+### **Referencing Subcomponents**
+
+Subcomponents provide a way to share standard functionality using generic components. For example, we could extract the table from our Tasks component and create a Table subcomponent. This means that when we create a new page that includes a table, we don’t need to make the table from scratch. In fact, we can include multiple table instances in a single page. We reference the tab by creating HTML tags with the component’s selectors.
+
+```html
+<app-table ></app-table>
+```
+
+## **Creating a Navigation Bar**
+
+Let’s start by creating a Navigation bar. This provides a page header that displays the name of the app. It also provides a Logout button. Clicking the button returns the user to the Login page.
+
+![aa-06-02](aa-06-02.png)
+
+In your IDE’s integrated terminal, open the project folder and type:
+
+ng generate component components/navbar
+
+The following files are created.
+
+![aa-06-03](aa-06-03.png)
+
+Open src/app/components/navbar/navbar.component.ts. Replace the current code with the following:
+
+```javascript
+import { Component } from '@angular/core';  
+import { CommonModule } from '@angular/common';
+
+@Component({  
+ selector: 'app-navbar',  
+ standalone: true,  
+ imports: [ CommonModule ],  
+ templateUrl: './navbar.component.html',  
+ styleUrl: './navbar.component.scss'  
+})  
+export class NavbarComponent {  
+ constructor() { }  
 }
 ```
 
-In addition to mapping to HTML elements, you can create class selectors that apply to a group of elements. You can also target specific elements by creating ID selectors.
+## **Adding a Footer**
 
-### **Bootstrap**
+At the bottom of the page,  we will create a footer that displays copyright and version information. ![][image4]
 
-[Bootstrap](https://getbootstrap.com/) is a popular, flexible, and easy-to-use CSS framework. It was created by Twitter and made available as an open-source project. Bootstrap was designed to operate with Javascript, and specific versions are available for popular frameworks, such as React, Angular, and Vue.js. We will be using [NG Bootstrap](https://ng-bootstrap.github.io/#/home).
+In your IDE’s integrated terminal, open the project folder and type:
 
-## **Installing Bootstrap**
+ng generate component components/footer
 
-You can install NG Bootstrap with the [Angular CLI ng add](https://angular.dev/cli/add) command. In your IDE’s integrated terminal, open the project folder and type:
+The command generates the following files:
 
-ng add @ng-bootstrap/ng-bootstrap
+![aa-06-04](aa-06-04.png)
 
-If this doesn’t work, follow the detailed instructions on the NG Bootstrap website’s [Getting Started page](https://ng-bootstrap.github.io/#/getting-started). Now, all you need to do is update src/styles.scss. If you are using Angular 19, add the following to the top of the file
+Open src/app/components/footer/footer.component.ts. Replace the current code with the following:
 
-`@use "bootstrap/scss/bootstrap";`
+```javascript
+import { Component } from '@angular/core';  
+import { GlobalVariables } from '../../data/global-variables';  
+import { DatePipe } from '@angular/common';
 
-If you are using an earlier Angular version, replace `@use` with `@import`:
+@Component({  
+ selector: 'app-footer',  
+ standalone: true,  
+ imports: [ DatePipe ],  
+ templateUrl: './footer.component.html',  
+ styleUrl: './footer.component.scss'  
+})
 
-## **Applying Bootstrap to the Login Page**
+export class FooterComponent {  
+ currentYear!: number;  
+ appVersion:string = GlobalVariables.appVersion;  
+ constructor() {  
+   this.currentYear = Date.now();  
+ }  
+}
+```
 
-Before we installed Bootstrap, our login page looked like this:
+In order to display current copyright information, the component includes a variable called currentYear. This information will displayed in the template page using the Angular DatePipe directive. It also references an external file that includes the current application version.
 
-![aa-05-01](aa-05-01.png)
-
-After installing and referencing Bootstrap, it looks like this:
-
-![aa-05-02](aa-05-02.png)
-
-It looks similar to the original version, with minor changes to some elements. Now, let’s comment out the original styles in src/styles.scss. After refreshing the page, it looks like this:
-
-![aa-05-03](aa-05-03.png)
-
-The box that surrounded the form disappeared, and the form was shoved to the left edge of the page. Now, let’s replace our existing Login page with an improved Bootstrap version. Open src/app/login/login.component.html and replace the current contents of the file with the following: 
+Next, we will update the Footer page’s HTML template. Open src/app/components/footer/footer.component.ts. Replace the current code with the following:
 
 ```html
-<div class="container d-lg-flex">
- <div class="mx-auto p-2" style="margin-top: 100px;width:40%"></div>
+<div class="container">  
+ <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top fixed-bottom p-5">  
+  <p class="col-md-4 mb-0 text-muted">  
+   &copy;  2024 - {{currentYear | date : 'yyyy'}} MVDS</p>  
+  <a href="/"   
+   class="col-md-4 d-flex align-items-center justify-content-center   
+          mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"  
+    >  
+    <svg class="bi me-2" width="40" height="32">  
+    <use xlink:href="#bootstrap"/></svg>  
+  </a>  
+  <ul class="nav col-md-4 justify-content-end">  
+    <li class="nav-item">  
+      <a href="#" class="nav-link px-2 text-muted">  
+       Task App: Version {{appVersion}}   </a>  
+    </li>  
+  </ul>  
+ </footer>  
 </div>
 ```
 
-This adds a flexible container element that can expand and contract in relation to the browser window. Inside the container, we added a div element that will position the form elements on the page. Next, let’s add a card component to hold our login form.
+## **Referencing Page Component**
 
-```html
-<div class="container d-lg-flex">
- <div class="mx-auto p-2" style="margin-top: 100px;width:40%">
-  <div class="card">
-    <div class="card-header bg-primary">
-       <h4 class="text-light text-center">Task App</h4>
-     </div>
-     <div class="card-body"></div>
-     <div class="card-footer bg-primary text-light text-center">Please login to continue</div>
-   </div>
- </div>
-</div>
+In order to include our new page components, we need to reference them from the Tasks page.
+
+Open src/app/tasks/tasks.component.ts.
+
+At the top of the page, import the Navbar and Footer components.
+
+```javascript
+import { NavbarComponent } from '../components/navbar/navbar.component';  
+import { FooterComponent } from '../components/footer/footer.component';
 ```
 
-The Card’s header includes a header and footer. The header displays the Application name, and the footer provides instructions.
+In the @Component directive’s imports list, add NavbarComponent and FooterComponent.
 
-![aa-05-04](aa-05-04.png)
-
-In the card’s body section, let’s add our form with the appropriate Bootstrap CSS classes.
-
-```html
-<div class="card-body">
- <form [formGroup]="loginForm" class="form" (ngSubmit)="onSubmit()">
-  <div class="mb-3">
-   <label class="form-label">Email</label>
-   <input class="form-control" formControlName="email">
-  </div>
-  <div class="mb-3">
-   <label class="form-label">Password</label>
-   <input class="form-control" formControlName="password" type="password">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
- </form>
-</div>
+```javascript
+@Component({  
+ selector: 'app-tasks',  
+ standalone: true,  
+ imports: [ CommonModule, NavbarComponent, FooterComponent ],  
+ templateUrl: './tasks.component.html',  
+ styleUrl: './tasks.component.scss'  
+})
 ```
 
-When we refresh the page, it looks much improved.
+All we need to do now is update the template (HTML) page.
 
-![aa-05-05](aa-05-05.png)
+Open src/app/tasks/tasks.component.html.
 
-## **Updating the Tasks Page**
-
-Before we applied Bootstrap, the Tasks page looked like this:
-
-![aa-04-01](aa-04-01-02.png)
-
-Using our updated Login page, let’s log in and view our user’s assigned tasks. The Tasks page now looks like this:
-
-![aa-05-06](aa-05-06.png)
-
-This is a slight improvement, but it’s still not taking full advantage of Bootstrap. 
-
-Open src/app/tasks/tasks.component.html. Modify the opening table tag by adding the following Bootstrap CSS classes.
+At the top of the page, add a reference to the Navbar component.
 
 ```html
-<table class="table table-striped>
+<app-navbar></app-navbar>
 ```
 
-Now the table looks like this.
+At the bottom of the page, add a reference to the Footer component.
 
-![aa-05-06](aa-05-07.png)
+```html
+<app-footer></app-footer>
+```
+
+Refresh the page and the new components are displayed.
+
+![aa-06-01](aa-06-01.png)
 
 ## **Conclusion and What’s Next**
 
-In this installment, showed you the basics of Cascading Style Sheets (CSS) and how to use them to change how our app looks. We then introduced Bootstrap and how we can use it to improve the appearance of our simple HTML pages. In the next installment, we will continue to use Bootstrap as we explain how to create and style reusable Angular components.
+In this installment, we introduced the concepts of Angular metadata. We illustrated how metadata is used to reference components. Then we created to two new reusable page components and added them to our tasks page. In the next installment, we will create two more components and show you how to pass data from a component. We will also show you how to return data from a component.
