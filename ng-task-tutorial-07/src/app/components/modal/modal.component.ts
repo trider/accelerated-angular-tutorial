@@ -1,8 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// import { HttpService } from '@app/services/http-service/http.service';
 
 @Component({
   selector: 'app-modal',
@@ -28,7 +27,6 @@ export class ModalComponent {
 
   constructor(
     private modalService: NgbModal,
-    // private httpService: HttpService
   ) { }
   ngOnInit(): void {
     
