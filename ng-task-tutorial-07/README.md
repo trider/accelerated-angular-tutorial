@@ -318,4 +318,4 @@ Refresh the page, to display the new components.
 
 ## **Conclusion and What’s Next**
 
-In this installment, we introduced you to the @Input and @Output directives. Then, we described how to use them to pass data to and from components. We also showed you how to use the Bootstrap Alert and Module modules to display data. In the next and final installment in this series, we will show you how to send and receive data from an API using Angular services.
+In this installment, we introduced you to the @Input and @Output directives. Then, we described how to use them to pass data to and from components. We also showed you how to use the Bootstrap Alert and Module modules to display data. In the next installment in this series, we will show you how to send and receive data from an API using Angular services.

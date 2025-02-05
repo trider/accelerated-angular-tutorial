@@ -1,8 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DetailsTableComponent } from '../details-table/details-table.component';
 
 @Component({
   selector: 'app-modal',
@@ -10,24 +9,14 @@ import { DetailsTableComponent } from '../details-table/details-table.component'
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DetailsTableComponent
   ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-  @Input() tableData: any;
-  @Input() title:string = "Add Task";
-  @Input() item:any = null;
-  @Input() size: string = 'sm';
-  @Output() taskEvent = new EventEmitter<any>();
-
+  @Output() addTaskEvent = new EventEmitter<any>();
+  title:string = "Add Task";
   user:any = JSON.parse(sessionStorage.getItem('user') || '{}');
-  taskStatus:string[] = [
-    "do",
-    "doing",
-    "done"
-  ];
 
   taskForm = new FormGroup({
     user: new FormControl(this.user.userName),
@@ -42,51 +31,13 @@ export class ModalComponent {
   ngOnInit(): void {
     
   }
-  openModal(content:any, title:string) {
-    if(this.title === "Edit Task"){
-      this.taskForm.patchValue({
-        name: this.item.name,
-        description: this.item.description,
-        status: this.item.status,
-      });
-    }
-  
-    this.modalService.open(content, { size: this.size, scrollable: true })
+  openModal(content:any, title:string, item:any = null) {
+    this.title = title;
+    this.modalService.open(content, { size: 'sm', scrollable: true })
   }
 
   onSubmit(){
-    if (this.title==='Add Task'){
-      this.sendTask({
-        path:'/api/tasks/add',
-        data:{
-          ...this.taskForm.value,
-          added: new Date().toISOString(),
-          updated: new Date().toISOString(), 
-          taskId: this.tableData.length + 1,
-          isActive: true,
-          
-        }
-      })
-    }
-    else if (this.title==='Edit Task'){
-      this.sendTask({
-        path:`/api/tasks/update/${this.item.taskId}`,
-        data:{
-          ...this.taskForm.value,
-          updated: new Date().toISOString(), 
-          isActive: true,
-        }
-      })
-
-
-    }
-    
-    
-  }
-
-
-  sendTask(payload:any){
-    this.taskEvent.emit(payload)
+    this.addTaskEvent.emit(this.taskForm.value)
     this.modalService.dismissAll()
   }
 

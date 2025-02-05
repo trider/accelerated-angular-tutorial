@@ -5,27 +5,17 @@
     <thead>
      <tr>
       <th *ngFor="let col of tableCols" scope="col">{{col|titlecase}}</th>
-      <th colspan="3">Actions</th>
      </tr>
     </thead>
     <tbody>
      <tr *ngFor="let item of tableData">
       <td *ngFor="let col of tableCols">{{item[col]}}</td>
-      <td>
-        <app-modal [title]="'Details'" [item]="item" [size]="'lg'"></app-modal>
-      </td>
-      <td>
-        <app-modal [title]="'Edit Task'" [item]="item" (taskEvent)="manageTask($event)"></app-modal>
-      </td>
-      <td>
-        <button class="btn btn-danger rounded-pill" (click)="deleteTask(item)" >Delete</button>
-       </td>
      </tr>
     </tbody>
     <tfoot>
       <tr>
         <td colspan="6">
-          <app-modal [tableData]="tableData" (taskEvent)="manageTask($event)"></app-modal>
+          <app-modal (addTaskEvent)="addTask($event)"></app-modal>
         </td>
 
     </tfoot>

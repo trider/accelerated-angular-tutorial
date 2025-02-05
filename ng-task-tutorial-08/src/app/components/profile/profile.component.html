@@ -1,6 +1,4 @@
 <ngb-alert [dismissible]="false" [type]="'primary'">
   <strong>Welcome:</strong> {{user.name}}
-  <span class="float-end" style="margin-top: -9px;">
-    <app-modal [title]="'Details'" [item]="user" [size]="'lg'"></app-modal>
-  </span>
+   <button class="btn btn-primary btn-sm rounded-pill float-end" (click)="showProfile()">Show Profile</button>
 </ngb-alert>
