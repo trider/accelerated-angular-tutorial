@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CommonModule, JsonPipe, KeyValuePipe } from '@angular/common';
-
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -15,26 +14,11 @@ import { CommonModule, JsonPipe, KeyValuePipe } from '@angular/common';
 export class DetailsTableComponent implements OnInit {
  
   @Input() row:any=null
-  @Input() logRow:boolean = false
-  @Input() rowName:string = 'rowData'
-  @Input() showForm:boolean = false
-  @Input() isCurrency:boolean = false
-  @Input() showButton:boolean = true
-  @Input() showHeader:boolean = true
-  @Input() showPreferences:boolean = false
-  @Input() showPrefix:boolean = false
-  rowData:string = ''
-  preference:any = ''
-  rows:any=null
-  isCollapsed:boolean=true
-
 
 
   constructor() {}
 
   ngOnInit(): void {
-    if(this.row != null)this.rows = this.getRowValues(this.row)
-
    
   }
 

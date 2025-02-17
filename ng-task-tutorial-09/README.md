@@ -1,126 +1,360 @@
-# **Accelerated Angular Part 5: Styling with Bootstrap**
+# **Accelerated Angular Part 9:  Managing Tasks**
 
-In [Part Four](https://www.linkedin.com/pulse/accelerated-angular-part-4-components-presenting-data-jonathan-gold-iatdf/), we introduced Angular Components and Directives. We then showed you how to implement them by extending the Tasks component to display a table with all the tasks assigned to the authenticated user. At this point, our code is functional, but our pages could be prettier. Let’s face it: most developers, myself included, are not web designers, so we need some help from that department. The good news is that we don’t have to be, and there are a number of available solutions. In this installment, we dive into one of those solutions and investigate how we can use Bootstrap to make our app look and feel more professional. The sample code for this installment is available on [GitHub](https://github.com/trider/rapid-react-tutorial/tree/76624d7d8df10986c6152f5b2a85b503e4255751/rapid-react-tutorial-05).
+In [Part Eight](https://www.linkedin.com/pulse/accelerated-angular-part-8-integrating-apis-jonathan-gold-iapaf/), we introduced you to Angular Services, RXJS, and CORS. We used this information to integrate our app with the Task Management API. Now, we can authenticate users and retrieve tasks directly from the API. In this installment, we will complete the API integration by adding task management functionality.
 
-## **Key Concepts**
+![aa-09-00](aa-09-00.png)
 
-In this section, we provide background and context on CSS and Bootstrap.
+The sample code for this installment is available on [GitHub](https://github.com/trider/accelerated-angular-tutorial/tree/cd834bc78e52e3cae20b4011d2e92b84162a2e7d/ng-task-tutorial-09).
 
-### **CSS**
+## **Display Profile and Task Data**
 
-[Cascading Style Sheets (CSS)](https://developer.mozilla.org/en-US/docs/Web/CSS) is a language for managing the appearance of web pages. It allows you to separate the presentation of those pages from its underlying (HTML) content. CSS defines selectors that map to individual HTML elements. For each element, you can set properties (attributes) and the values to set for the properties. In the following example, we put the color and weight of a top-level heading (H1) element.
+Let’s start by creating a new component for displaying JSON data, such as a user profile or a task. Our Modal component will display this sub-component.
+
+![aa-09-01](aa-09-01.png)
+
+In your IDE’s integrated terminal, open the project folder and type:
+
+```console
+ng generate component components/details-table
+```
+
+Open src/app/components/details-table/details-table.component.ts. At the top of the file, add the following references.
+
+```javascript
+import { Component, OnInit, Input } from '@angular/core';  
+import { CommonModule } from '@angular/common';
+```
+
+Update the @components directive’s import section to include the CommonModule.
+
+```javascript
+@Component({  
+ selector: 'app-details-table',  
+ standalone: true,  
+ imports: [ CommonModule],  
+})
+```
+
+At the top of the file, declare an Input variable to receive data from a component.
 
 ```css
-h1 {
-    color:red;
-    font-weight: bold;
+@Input() row:any=null
+```
+
+Add a method called getRowValues. This function will be called from details-table.component.html. The function receives an object called row. In the function, declare an array called data to hold and return the processed data. Then, declare a variable called objectArray that is the result of an Object.entries() method. This converts the rows into an iteratable object.  
+
+```javascript
+getRowValues(row:any){  
+   let data:any = []  
+   const objectArray = Object.entries(row);  
+   objectArray.forEach(([key, value]) => {  
+    data.push({key:key, value:JSON.stringify(value)})  
+   });  
+   return data  
 }
 ```
 
-In addition to mapping to HTML elements, you can create class selectors that apply to a group of elements. You can also target specific elements by creating ID selectors.
+Using a forEach method, we can loop through objectArray as an array (list) of key-value pairs. The key is the name of the object, and value is the value of the object, for example:
 
-### **Bootstrap**
+```json
+{ "email": "jonnygold@gmail.com" }  
+```
 
-[Bootstrap](https://getbootstrap.com/) is a popular, flexible, and easy-to-use CSS framework. It was created by Twitter and made available as an open-source project. Bootstrap was designed to operate with Javascript, and specific versions are available for popular frameworks, such as React, Angular, and Vue.js. We will be using [NG Bootstrap](https://ng-bootstrap.github.io/#/home).
+This value is converted to a string and appended to an array.
 
-## **Installing Bootstrap**
+Open src/app/components/details-table/details-table.component.ts. Remove the boilerplate code with this table.
 
-You can install NG Bootstrap with the [Angular CLI ng add](https://angular.dev/cli/add) command. In your IDE’s integrated terminal, open the project folder and type:
+```htm
+<table class="table">  
+ <tbody >  
+  <tr *ngFor="let val of getRowValues(row);let i = index">  
+   <th style="vertical-align: top;">  
+     <span>{{val.key}}</span>  
+   </th>  
+   <td>{{val.value}}</td>    
+  </tr>  
+ </tbody>  
+</table>
+```
 
-ng add @ng-bootstrap/ng-bootstrap
+The table calls getRowValues and passes the row object input object. It displays the key in the left column and its corresponding value in the right column.
 
-If this doesn’t work, follow the detailed instructions on the NG Bootstrap website’s [Getting Started page](https://ng-bootstrap.github.io/#/getting-started). Now, all you need to do is update src/styles.scss. If you are using Angular 19, add the following to the top of the file
+## **Managing Tasks**
 
-`@use "bootstrap/scss/bootstrap";`
+Our next task is to modify the Modal component to manage tasks. In addition to the Task Add and Details table, the Modal will support task editing. This includes the ability to change a tasks status.
 
-If you are using an earlier Angular version, replace `@use` with `@import`:
+![aa-09-02](aa-09-02.png)
 
-## **Applying Bootstrap to the Login Page**
+First, we add references to DetailsTableComponent.
 
-Before we installed Bootstrap, our login page looked like this:
+```javascript
+import { DetailsTableComponent } from '../details-table/details-table.component';
 
-![aa-05-01](aa-05-01.png)
+@Component({  
+ selector: 'app-modal',  
+ standalone: true,  
+ imports: [ CommonModule, ReactiveFormsModule,DetailsTableComponent],  
+ templateUrl: './modal.component.html',  
+ styleUrl: './modal.component.scss'  
+})
 
-After installing and referencing Bootstrap, it looks like this:
+```
 
-![aa-05-02](aa-05-02.png)
+Update the ModalComponent class’s input and output variables.
 
-It looks similar to the original version, with minor changes to some elements. Now, let’s comment out the original styles in src/styles.scss. After refreshing the page, it looks like this:
+```javascript
+export class ModalComponent {  
+ @Input() tableData: any;  
+ @Input() title:string = "Add Task";  
+ @Input() item:any = null;  
+ @Input() size: string = 'sm';  
+ @Output() taskEvent = new EventEmitter<any>();
+```
 
-![aa-05-03](aa-05-03.png)
+Add a user variable to retrieve the stored user profile. Then, add the taskStatus list.
 
-The box that surrounded the form disappeared, and the form was shoved to the left edge of the page. Now, let’s replace our existing Login page with an improved Bootstrap version. Open src/app/login/login.component.html and replace the current contents of the file with the following: 
+ ```javascript
+ user:any = JSON.parse(sessionStorage.getItem('user') || '{}');  
+ taskStatus:string[] = ["do","doing","done"];  
+ Update the taskForm object to include task status.
+
+taskForm = new FormGroup({  
+   user: new FormControl(this.user.userName),  
+   name: new FormControl('New Task'),  
+   description: new FormControl('My new task description'),  
+   status: new FormControl('do'),  
+ });
+ ```
+
+Modify the openModal class method to support task editing. The function checks if the taskForm’s title is set to ‘Edit Task’ and populates the taskForm accordingly.
+
+```javascript
+openModal(content:any, title:string) {  
+   if(this.title === "Edit Task"){  
+     this.taskForm.patchValue({  
+       name: this.item.name,  
+       description: this.item.description,  
+       status: this.item.status,  
+     });  
+   }  
+    this.modalService.open(content, { size: this.size, scrollable: true })  
+ }
+```
+
+Now, update onSubmit to support adding and editing tasks. Depending on the option, the sendTask method is called and passed an object that includes the path of the API endpoint and a payload (data) to be sent.
+
+```javascript
+ onSubmit(){  
+   if (this.title==='Add Task'){  
+     this.sendTask({  
+       path:'/api/tasks/add',  
+       data:{  
+         ...this.taskForm.value,  
+         added: new Date().toISOString(),  
+         updated: new Date().toISOString(),  
+         taskId: this.tableData.length + 1,  
+         isActive: true,  
+          
+       }  
+     })  
+   }  
+   else if (this.title==='Edit Task'){  
+     this.sendTask({  
+       path:/api/tasks/update/${this.item.taskId},  
+       data:{  
+         ...this.taskForm.value,  
+         updated: new Date().toISOString(),  
+         isActive: true,  
+       }  
+     })  
+   }  
+ }
+```
+
+Add the sendTask function to pass the task data back to the Tasks component. The data is passed using the taskEvent object’s emit method.
+
+```javascript
+sendTask(payload:any){  
+   this.taskEvent.emit(payload)  
+   this.modalService.dismissAll()  
+}
+```
+
+After updating the code file, we update the component’s html. Open src/app/components/details-table/details-table.component.ts. In the modal-body add two HTML divs that check if title is set to ‘Details’
 
 ```html
-<div class="container d-lg-flex">
- <div class="mx-auto p-2" style="margin-top: 100px;width:40%"></div>
+<div class="modal-body">  
+  <div *ngIf="title==='Details'"></div>  
+  <div *ngIf="title!=='Details'"></div>  
 </div>
 ```
 
-This adds a flexible container element that can expand and contract in relation to the browser window. Inside the container, we added a div element that will position the form elements on the page. Next, let’s add a card component to hold our login form.
+In the top div, add a reference to the details-table component. Assign the row input variable the item passed to the Modal.
 
-```html
-<div class="container d-lg-flex">
- <div class="mx-auto p-2" style="margin-top: 100px;width:40%">
-  <div class="card">
-    <div class="card-header bg-primary">
-       <h4 class="text-light text-center">Task App</h4>
-     </div>
-     <div class="card-body"></div>
-     <div class="card-footer bg-primary text-light text-center">Please login to continue</div>
-   </div>
- </div>
+```htm
+<div *ngIf="title==='Details'">  
+ <app-details-table [row]="item"></app-details-table>  
 </div>
 ```
 
-The Card’s header includes a header and footer. The header displays the Application name, and the footer provides instructions.
+In the second div, insert the task form. At the bottom of the form, add a select component that displays a list of task statuses. This list is only displayed when editing a task.
 
-![aa-05-04](aa-05-04.png)
-
-In the card’s body section, let’s add our form with the appropriate Bootstrap CSS classes.
-
-```html
-<div class="card-body">
- <form [formGroup]="loginForm" class="form" (ngSubmit)="onSubmit()">
-  <div class="mb-3">
-   <label class="form-label">Email</label>
-   <input class="form-control" formControlName="email">
-  </div>
-  <div class="mb-3">
-   <label class="form-label">Password</label>
-   <input class="form-control" formControlName="password" type="password">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
- </form>
+```htm
+<div *ngIf="title!=='Details'">  
+ <form class="form" [formGroup]="taskForm" (ngSubmit)="onSubmit()">  
+   …  
+   <div class="mb-3" *ngIf="title === 'Edit Task'">  
+    <label>Status</label>  
+     <select class="form-select" formControlName="status">  
+      <option *ngFor="let item of taskStatus" [value]="item">{{item}}</option>  
+      </select>  
+     </div>  
+   …  
+ </form>  
 </div>
 ```
 
-When we refresh the page, it looks much improved.
+After the Modal, template, update the button section with the following code:
 
-![aa-05-05](aa-05-05.png)
-
-## **Updating the Tasks Page**
-
-Before we applied Bootstrap, the Tasks page looked like this:
-
-![aa-04-01](aa-04-01-02.png)
-
-Using our updated Login page, let’s log in and view our user’s assigned tasks. The Tasks page now looks like this:
-
-![aa-05-06](aa-05-06.png)
-
-This is a slight improvement, but it’s still not taking full advantage of Bootstrap. 
-
-Open src/app/tasks/tasks.component.html. Modify the opening table tag by adding the following Bootstrap CSS classes.
-
-```html
-<table class="table table-striped>
+```htm
+<div class="d-grid gap-2 d-md-flex justify-content-md-center">  
+ <button *ngIf="title!=='Details'"class="btn btn-primary rounded-pill"  
+  (click)="openModal(content, title)"  
+ >  
+ {{title}}  
+ </button>  
+ <button *ngIf="title==='Details'" class="btn btn-secondary rounded-pill"  
+  (click)="openModal(content, title)"  
+ >  
+ {{title}}  
+ </button>  
+</div>
 ```
 
-Now the table looks like this.
+## **Updating the Tasks Component**
 
-![aa-05-06](aa-05-07.png)
+After modifying the subcomponents, we can update the Task component’s table to support the new task management functionality.
+
+Open src/app/tasks/tasks.component.ts.
+
+Move this line of code from ngOnInit to the constructor.
+
+```javascript
+constructor(  
+   public httpService:HttpService  
+ ) {  
+   this.user = JSON.parse(sessionStorage.getItem('user') || '{}');  
+}
+```
+
+Create a new function called getTasks and move the code that requests tasks to it from ngOnInit.
+
+```javascript
+getTasks(){  
+ this.httpService.getServiceData(/api/tasks/user/${this.user.userName})  
+  .subscribe((data: any) => {  
+     this.tableData = data  
+ });  
+}
+```
+
+Now, we update the list of tasks when the page loads, and when we add, edit, or delete tasks.
+
+In ngOnInit, add a call to getTasks.
+
+```javascript
+ngOnInit(): void {  
+  this.getTasks()  
+}
+```
+
+Next, add a function that deletes tasks. This sends a path and a payload to a function that handles HTTP post requests to the API.
+
+```javascript
+ deleteTask(item:any){  
+   this.manageTask({  
+     path:/api/tasks/delete,  
+     data:{  
+       taskId:item.taskId  
+     }  
+   })  
+ }
+```
+
+Now, add the manageTask function to send the payload using the the httpServices’s postServiceData method.
+
+```javascript
+manageTask(task:any){  
+ this.httpService.postServiceData(task.path, task.data).subscribe((data: any) => {  
+     if(data !==null)this.getTasks()  
+ });  
+}
+```
+
+Open src/app/tasks/tasks.component.ts. In the table header, add the following row:
+
+```htm
+<th colspan="3">Actions</th>
+```
+
+The row has a colspan (width) of three columns. This matches the three buttons we will add to each row of the table body with this code.
+
+```html
+<tbody>  
+ <tr *ngFor="let item of tableData">  
+  <td *ngFor="let col of tableCols">{{item[col]}}</td>  
+  <td>  
+   <app-modal [title]="'Details'" [item]="item" [size]="'lg'"></app-modal>  
+  </td>  
+  <td>  
+   <app-modal   
+    [title]="'Edit Task'"   
+    [item]="item"  
+    (taskEvent)="manageTask($event)"  
+   >  
+   </app-modal>  
+  </td>  
+  <td>  
+   <button   
+    class="btn btn-danger rounded-pill"   
+   (click)="deleteTask(item)"   
+   >  
+   Delete  
+   </button>  
+  </td>  
+ </tr>  
+</tbody>
+```
+
+## **Modifying the Profile Component**
+
+Our final change is to update the Profile component to use display a Modal with the Details table. Open src/app/components/profile/profile.component.ts. Add a reference to ModalComponent an update the @Component directive.
+
+import { ModalComponent } from '../modal/modal.component';  
+@Component({  
+ selector: 'app-profile',  
+ standalone: true,  
+ imports: [ CommonModule, NgbAlertModule, ModalComponent ],  
+ templateUrl: './profile.component.html',  
+ styleUrl: './profile.component.scss'  
+})
+
+Open src/app/components/profile/profile.component.html. Replace the existing code with:
+
+```htm
+
+<ngb-alert [dismissible]="false" [type]="'primary'">  
+ <strong>Welcome:</strong> {{user.name}}  
+ <span class="float-end" style="margin-top: -9px;">  
+   <app-modal [title]="'Details'" [item]="user" [size]="'lg'"></app-modal>  
+ </span>  
+</ngb-alert>
+```
+
+Refresh your browser and the following is displayed.
+
+![aa-09-03](aa-09-03.png)
 
 ## **Conclusion and What’s Next**
 
-In this installment, showed you the basics of Cascading Style Sheets (CSS) and how to use them to change how our app looks. We then introduced Bootstrap and how we can use it to improve the appearance of our simple HTML pages. In the next installment, we will continue to use Bootstrap as we explain how to create and style reusable Angular components.
+In this installment, we completed our application by adding task management features. If you enjoyed this series, check out my previous series on NodeJS or React. Both are available from my website at [https://jonnygold.net](https://jonnygold.net).

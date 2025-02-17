@@ -6,7 +6,6 @@
  <div class="modal-body">
    <div *ngIf="title==='Details'">
     <app-details-table [row]="item"></app-details-table>
-
    </div>
    <div *ngIf="title!=='Details'">
     <form class="form" [formGroup]="taskForm" (ngSubmit)="onSubmit()">

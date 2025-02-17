@@ -32,10 +32,10 @@ export class TasksComponent implements OnInit {
   constructor(
     public httpService:HttpService
   ) {
+    this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
    }
   
   ngOnInit(): void {
-    this.user = JSON.parse(sessionStorage.getItem('user') || '{}');
     this.getTasks()
   }
 
@@ -57,7 +57,6 @@ export class TasksComponent implements OnInit {
   manageTask(task:any){
     this.httpService.postServiceData(task.path, task.data).subscribe((data: any) => {
       if(data !==null)this.getTasks()
-  
    });
   }
 

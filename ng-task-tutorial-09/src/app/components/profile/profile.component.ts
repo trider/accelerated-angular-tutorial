@@ -10,7 +10,6 @@ import { ModalComponent } from '../modal/modal.component';
     CommonModule,
     NgbAlertModule,
     ModalComponent
-  
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
