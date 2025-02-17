@@ -330,6 +330,7 @@ The row has a colspan (width) of three columns. This matches the three buttons w
 
 Our final change is to update the Profile component to use display a Modal with the Details table. Open src/app/components/profile/profile.component.ts. Add a reference to ModalComponent an update the @Component directive.
 
+```javascript
 import { ModalComponent } from '../modal/modal.component';  
 @Component({  
  selector: 'app-profile',  
@@ -338,6 +339,7 @@ import { ModalComponent } from '../modal/modal.component';
  templateUrl: './profile.component.html',  
  styleUrl: './profile.component.scss'  
 })
+```
 
 Open src/app/components/profile/profile.component.html. Replace the existing code with:
 
