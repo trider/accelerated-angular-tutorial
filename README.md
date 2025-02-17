@@ -12,3 +12,4 @@ In this series, I will show you how to get started with Angular and use it to bu
 * [Part 6](https://github.com/trider/accelerated-angular-tutorial/tree/211acbfd99de9a67fcae438646f4d3ac19f23cdf/ng-task-tutorial-06 "ng-task-tutorial-06"): Styling with Bootstrap
 * [Part 7](https://github.com/trider/accelerated-angular-tutorial/tree/6b94e887b11e7909ab2df1a1b528f63b037c5d51/ng-task-tutorial-07 "ng-task-tutorial-07"): Passing Data Between Components
 * [Part 8](https://github.com/trider/accelerated-angular-tutorial/tree/ec3791f125d68e2644f4218732c74de0410070b1/ng-task-tutorial-08 "ng-task-tutorial-08"): Integrating API
+* [Part 9](https://github.com/trider/accelerated-angular-tutorial/tree/9bddf97e525f5f5cfdf504aea9c67dc2bd7ba115/ng-task-tutorial-09 "ng-task-tutorial-08"): Managing Tasks
